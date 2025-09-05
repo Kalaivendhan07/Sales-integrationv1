@@ -600,12 +600,12 @@ class EnhancedValidationEngine {
             INSERT INTO isteer_general_lead (
                 cus_name, registration_no, dsr_name, sector, sub_sector,
                 product_name, opportunity_name, opp_type, lead_status,
-                volume_converted, source_from, integration_managed, 
+                volume_converted, annual_potential, source_from, integration_managed, 
                 integration_batch_id, last_integration_update, entered_date_time
             ) VALUES (
                 :cus_name, :registration_no, :dsr_name, :sector, :sub_sector,
                 :product_name, :opportunity_name, :opp_type, :lead_status,
-                :volume_converted, :source_from, 1, :batch_id, NOW(), :entered_date_time
+                :volume_converted, :annual_potential, :source_from, 1, :batch_id, NOW(), :entered_date_time
             )
         ");
         
@@ -617,6 +617,9 @@ class EnhancedValidationEngine {
         // Use original entered date for split opportunities, current date for new customers
         $enteredDateTime = isset($salesData['original_entered_date']) ? $salesData['original_entered_date'] : date('Y-m-d H:i:s');
         
+        // Use provided annual potential or default to volume
+        $annualPotential = isset($salesData['annual_potential']) ? $salesData['annual_potential'] : $salesData['volume'];
+        
         $stmt->bindParam(':cus_name', $salesData['customer_name']);
         $stmt->bindParam(':registration_no', $salesData['registration_no']);
         $stmt->bindParam(':dsr_name', $salesData['dsr_name']);
@@ -627,6 +630,7 @@ class EnhancedValidationEngine {
         $stmt->bindParam(':opp_type', $oppType);
         $stmt->bindParam(':lead_status', $leadStatus);
         $stmt->bindParam(':volume_converted', $salesData['volume']);
+        $stmt->bindParam(':annual_potential', $annualPotential);
         $stmt->bindParam(':source_from', $sourceFrom);
         $stmt->bindParam(':batch_id', $batchId);
         $stmt->bindParam(':entered_date_time', $enteredDateTime);
