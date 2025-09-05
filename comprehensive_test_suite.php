@@ -386,10 +386,12 @@ class ComprehensiveTestSuite {
         $result = $this->enhancedEngine->validateSalesRecord($testData, 'TEST_L5_SUBSECTOR');
         
         $subSectorUpdated = false;
-        foreach ($result['messages'] as $msg) {
-            if (strpos($msg, 'Sub-sector updated') !== false) {
-                $subSectorUpdated = true;
-                break;
+        if (isset($result['messages']) && is_array($result['messages'])) {
+            foreach ($result['messages'] as $msg) {
+                if (strpos($msg, 'Sub-sector updated') !== false) {
+                    $subSectorUpdated = true;
+                    break;
+                }
             }
         }
         
