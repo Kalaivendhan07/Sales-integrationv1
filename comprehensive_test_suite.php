@@ -670,10 +670,12 @@ class ComprehensiveTestSuite {
         
         // Should not create cross-sell (retention case)
         $crossSellCreated = false;
-        foreach ($result['actions'] as $action) {
-            if (strpos($action, 'CROSS_SELL') !== false) {
-                $crossSellCreated = true;
-                break;
+        if (isset($result['actions']) && is_array($result['actions'])) {
+            foreach ($result['actions'] as $action) {
+                if (strpos($action, 'CROSS_SELL') !== false) {
+                    $crossSellCreated = true;
+                    break;
+                }
             }
         }
         
