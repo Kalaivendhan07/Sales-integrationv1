@@ -156,10 +156,10 @@ foreach ($opportunities as $opp) {
 
 // Cleanup
 echo "\n🧹 Cleaning up test data...\n";
-$db->exec("UPDATE isteer_general_lead SET integration_managed = 0 WHERE registration_no = '29TESTUP1234A1Z5'");
-$db->exec("DELETE FROM isteer_general_lead WHERE registration_no = '29TESTUP1234A1Z5'");
+$db->exec("UPDATE isteer_general_lead SET integration_managed = 0 WHERE registration_no = '29TESTUP1234A1Z'");
+$db->exec("DELETE FROM isteer_general_lead WHERE registration_no = '29TESTUP1234A1Z'");
 $db->exec("DELETE FROM isteer_opportunity_products WHERE product_id LIKE 'SHELL_%'");
-$db->exec("DELETE FROM isteer_sales_upload_master WHERE registration_no = '29TESTUP1234A1Z5'");
+$db->exec("DELETE FROM isteer_sales_upload_master WHERE registration_no = '29TESTUP1234A1Z'");
 $db->exec("DELETE FROM integration_audit_log WHERE integration_batch_id LIKE 'TEST_%'");
 echo "✅ Cleanup completed\n";
 
