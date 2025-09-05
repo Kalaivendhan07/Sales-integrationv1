@@ -46,7 +46,7 @@ class BackendTestSuite {
     private function setupMinimalTestData() {
         echo "🔧 Setting up minimal test data...\n";
         
-        // Insert one test opportunity
+        // Insert one test opportunity with correct GSTIN format
         $stmt = $this->db->prepare("
             INSERT INTO isteer_general_lead (
                 cus_name, registration_no, dsr_name, dsr_id, sector, sub_sector,
@@ -54,7 +54,7 @@ class BackendTestSuite {
                 opportunity_name, lead_status, volume_converted, annual_potential,
                 source_from, integration_managed, entered_date_time
             ) VALUES (
-                'Backend Test Corp', '29AATEST0001B1Z', 'DSR Backend', 999,
+                'Backend Test Corp', '29AATEST0001B1ZX', 'DSR Backend', 999,
                 'Technology', 'Software', 'Shell Ultra', 'Shell Premium', '',
                 'Backend Test Opportunity', 'Order', 500, 1000,
                 'Backend Test', 0, '2025-01-01 10:00:00'
