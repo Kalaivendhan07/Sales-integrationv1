@@ -434,14 +434,6 @@ class EnhancedValidationEngine {
         
         return $result;
     }
-        if ($currentTier && $currentTier['current_tier'] == 'Mainstream' && $salesTier == 'Premium') {
-            $result['is_upgrade'] = true;
-            $result['from_tier'] = 'Mainstream';
-            $result['to_tier'] = 'Premium';
-        }
-        
-        return $result;
-    }
     
     /**
      * Check for tier upgrade within same product family (Mainstream to Premium)
