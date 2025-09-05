@@ -77,7 +77,8 @@ class AuditLogger {
             ");
             
             $stmt->bindParam(':lead_id', $leadId);
-            $stmt->bindParam(':backup_data', json_encode($leadData));
+            $backupDataJson = json_encode($leadData);
+            $stmt->bindParam(':backup_data', $backupDataJson);
             $stmt->bindParam(':batch_id', $batchId);
             $stmt->bindParam(':expires_at', $expiresAt);
             
