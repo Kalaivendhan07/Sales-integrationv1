@@ -543,7 +543,7 @@ class ComprehensiveTestSuite {
             // Reset opportunity volume for consistent testing
             $stmt = $this->db->prepare("
                 UPDATE isteer_general_lead 
-                SET volume_converted = 800, lead_status = 'Order' 
+                SET volume_converted = 800, lead_status = 'Order', integration_managed = 1 
                 WHERE registration_no = '29AATEST2222B1Z'
             ");
             $stmt->execute();
