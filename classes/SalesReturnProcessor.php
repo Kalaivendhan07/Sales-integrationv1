@@ -134,8 +134,8 @@ class SalesReturnProcessor {
      */
     private function determineStageAfterReturn($opportunity, $newVolume, $currentPotential) {
         if ($newVolume == 0) {
-            // Full return - go back to qualified stage (customer showed buying intent)
-            return 'Qualified';
+            // Full return - move to Suspect stage (raises questions about customer commitment)
+            return 'Suspect';
         } else if ($newVolume > 0) {
             // Partial return - keep Order stage (still has active sales)
             return 'Order';
