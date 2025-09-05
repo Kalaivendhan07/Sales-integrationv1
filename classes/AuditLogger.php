@@ -198,16 +198,16 @@ class AuditLogger {
     }
     
     /**
-     * Get field entry date from last_updated_date_time
+     * Get field entry date from last_integration_update
      */
     private function getFieldEntryDate($leadId, $fieldName) {
         try {
-            $stmt = $this->db->prepare("SELECT last_updated_date_time FROM isteer_general_lead WHERE id = :id");
+            $stmt = $this->db->prepare("SELECT last_integration_update FROM isteer_general_lead WHERE id = :id");
             $stmt->bindParam(':id', $leadId);
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
             
-            return $result ? $result['last_updated_date_time'] : null;
+            return $result ? $result['last_integration_update'] : null;
             
         } catch (Exception $e) {
             error_log('Get Field Entry Date Error: ' . $e->getMessage());
