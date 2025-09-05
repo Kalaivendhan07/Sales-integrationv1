@@ -813,5 +813,48 @@ class EnhancedValidationEngine {
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result ? $result['dsr_id'] : 1; // Default to 1 if not found
     }
+    
+    /**
+     * Check Retention stage for cross-sell or up-sell logic
+     */
+    private function checkRetentionCrossSellUpSell($salesData, $opportunityId, $batchId, $opportunity) {
+        $result = array('action_taken' => false, 'message' => '');
+        
+        // Get current opportunity product families
+        $oppProducts = array_filter(array($opportunity['product_name'], $opportunity['product_name_2'], $opportunity['product_name_3']));
+        $salesProduct = $salesData['product_family_name'];
+        
+        if (in_array($salesProduct, $oppProducts)) {
+            // SAME PRODUCT FAMILY - Check for tier upgrade (Up-Sell)
+            $tierUpgrade = $this->checkTierUpgradeForSameProduct($opportunityId, $salesData);
+            if ($tierUpgrade['is_upgrade']) {
+                // Create Up-Sell opportunity for tier upgrade within same product family
+                $upSellData = $salesData;
+                $upSellData['opp_type'] = 'Up-Sell';
+                $upSellData['parent_opportunity_id'] = $opportunityId;
+                $upSellData['original_entered_date'] = $opportunity['entered_date_time'];
+                $upSellData['tier_upgrade_info'] = $tierUpgrade;
+                
+                $this->createNewOpportunity($upSellData, $batchId);
+                $result['action_taken'] = true;
+                $result['up_sell_created'] = true;
+                $result['message'] = 'Up-Sell opportunity created from Retention due to tier upgrade: ' . $tierUpgrade['from_tier'] . ' → ' . $tierUpgrade['to_tier'];
+            }
+            // If same product + same tier, no action taken (just volume update)
+        } else {
+            // DIFFERENT PRODUCT FAMILY - Create Cross-Sell opportunity
+            $crossSellData = $salesData;
+            $crossSellData['opp_type'] = 'Cross-Sell';
+            $crossSellData['parent_opportunity_id'] = $opportunityId;
+            $crossSellData['original_entered_date'] = $opportunity['entered_date_time'];
+            
+            $this->createNewOpportunity($crossSellData, $batchId);
+            $result['action_taken'] = true;
+            $result['cross_sell_created'] = true;
+            $result['message'] = 'Cross-Sell opportunity created from Retention for different product family: ' . $salesProduct;
+        }
+        
+        return $result;
+    }
 }
 ?>
