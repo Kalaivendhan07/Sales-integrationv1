@@ -342,11 +342,12 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Complex Retention Multi-Product Scenario Test"
-    - "Backend System Comprehensive Validation"
-  stuck_tasks: []
-  test_all: true
-  test_priority: "high_first"
+    - "FastAPI Backend System Validation"
+    - "Environment Compatibility Analysis"
+  stuck_tasks:
+    - "PHP System Testing (Environment Limitation)"
+  test_all: false
+  test_priority: "environment_first"
 
 agent_communication:
   - agent: "main"
