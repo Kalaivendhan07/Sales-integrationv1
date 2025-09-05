@@ -159,7 +159,7 @@ class ComprehensiveTestSuite {
                     sku_code, volume, registration_no, tire_type, invoice_no, created_at
                 ) VALUES (
                     :date, :dsr_name, :customer_name, :sector, :product_family,
-                    :sku_code, :volume, '29AATEST1111A1Z', :tire_type, 'TST001', NOW()
+                    :sku_code, :volume, '29AAATE1111A1Z5', :tire_type, 'TST001', NOW()
                 )
             ");
             
