@@ -321,7 +321,7 @@ class BackendTestSuite {
             $method->setAccessible(true);
             
             // Get opportunity ID first
-            $stmt = $this->db->prepare("SELECT id FROM isteer_general_lead WHERE registration_no = '29AATEST0001B1ZX'");
+            $stmt = $this->db->prepare("SELECT id FROM isteer_general_lead WHERE registration_no = '29AATEST0001B1X'");
             $stmt->execute();
             $opp = $stmt->fetch(PDO::FETCH_ASSOC);
             $opportunityId = $opp['id'];
@@ -337,7 +337,7 @@ class BackendTestSuite {
                 // Check if record was inserted in database
                 $stmt = $this->db->prepare("
                     SELECT COUNT(*) as count FROM volume_discrepancy_tracking 
-                    WHERE registration_no = '29AATEST0001B1ZX'
+                    WHERE registration_no = '29AATEST0001B1X'
                 ");
                 $stmt->execute();
                 $count = $stmt->fetch(PDO::FETCH_ASSOC)['count'];
