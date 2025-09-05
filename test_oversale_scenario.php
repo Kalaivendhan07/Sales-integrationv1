@@ -216,11 +216,11 @@ echo "\n📊 STEP 7: Volume discrepancy tracking details...\n";
 echo "════════════════════════════════════════════════════════════════\n";
 
 $stmt = $db->prepare("
-    SELECT opportunity_volume, discrepancy_type, 
-           discrepancy_volume, discrepancy_percentage, tracked_on
+    SELECT opportunity_volume, sellout_volume, discrepancy_type, 
+           discrepancy_volume, discrepancy_percentage, detected_date
     FROM volume_discrepancy_tracking 
     WHERE registration_no = ?
-    ORDER BY tracked_on DESC LIMIT 5
+    ORDER BY detected_date DESC LIMIT 5
 ");
 $stmt->execute([$testGSTIN]);
 $discrepancyRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -229,9 +229,10 @@ if (!empty($discrepancyRecords)) {
     foreach ($discrepancyRecords as $discrepancy) {
         echo "   📊 Discrepancy Type: " . $discrepancy['discrepancy_type'] . "\n";
         echo "       Opportunity Volume: " . $discrepancy['opportunity_volume'] . "L\n";
+        echo "       Sell-out Volume: " . $discrepancy['sellout_volume'] . "L\n";
         echo "       Discrepancy Volume: " . $discrepancy['discrepancy_volume'] . "L\n";
         echo "       Discrepancy Percentage: " . $discrepancy['discrepancy_percentage'] . "%\n";
-        echo "       Tracked On: " . $discrepancy['tracked_on'] . "\n";
+        echo "       Detected On: " . $discrepancy['detected_date'] . "\n";
     }
 }
 
