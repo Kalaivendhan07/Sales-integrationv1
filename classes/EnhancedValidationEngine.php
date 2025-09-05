@@ -40,6 +40,12 @@ class EnhancedValidationEngine {
             
             $opportunityId = $level1Result['opportunity_id'];
             $result['opportunity_id'] = $opportunityId;
+            $isNewOpportunity = isset($level1Result['opportunity_created']) ? $level1Result['opportunity_created'] : false;
+            
+            if ($isNewOpportunity) {
+                $result['opportunity_created'] = true;
+                $result['messages'][] = 'New customer opportunity created';
+            }
             
             // Level 2: DSR Validation with Call Plans
             $level2Result = $this->level2_DSRValidationWithCallPlans($salesData, $opportunityId, $batchId);
