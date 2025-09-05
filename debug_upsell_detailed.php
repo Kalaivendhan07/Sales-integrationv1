@@ -8,7 +8,7 @@ echo "=== UP-SELL DEBUG - DETAILED ANALYSIS ===\n";
 $database = new Database();
 $db = $database->getConnection();
 
-$testGSTIN = '11UPSELL11H1ZD5';
+$testGSTIN = '11AAGCA2111H1ZD';
 
 // Setup test data
 $db->exec("UPDATE isteer_general_lead SET integration_managed = 0 WHERE registration_no = '$testGSTIN'");
