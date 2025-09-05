@@ -1,0 +1,6 @@
+registration_no,customer_name,dsr_name,product_family_name,sku_code,volume,sector,sub_sector,tire_type
+29ABCDE1234F1Z5,ABC Manufacturing Ltd,John Smith,Shell Ultra,ULTRA_001,250.50,Manufacturing,Heavy Machinery,Premium
+29XYZAB5678G2Z7,XYZ Industries,Sarah Johnson,Shell Premium,PREM_002,180.00,Manufacturing,Industrial,Mainstream
+29DEFGH9012H3Z8,DEF Technologies,Mike Wilson,Shell Standard,STAND_003,320.75,Technology,Software,Premium
+29GHIJK3456I4Z9,GHI Retail Chain,Lisa Brown,Shell Pro,PRO_004,150.25,Retail,Chain Stores,Mainstream
+29JKLMN7890J5Z0,JKL Construction,David Lee,Shell Advanced,ADV_005,420.00,Construction,Infrastructure,Premium
