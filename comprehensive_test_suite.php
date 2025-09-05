@@ -163,14 +163,23 @@ class ComprehensiveTestSuite {
                 )
             ");
             
-            $stmt->bindParam(':date', $sales[0]);
-            $stmt->bindParam(':dsr_name', $sales[1]);
-            $stmt->bindParam(':customer_name', $sales[2]);
-            $stmt->bindParam(':sector', $sales[3]);
-            $stmt->bindParam(':product_family', $sales[4]);
-            $stmt->bindParam(':sku_code', $sales[5]);
-            $stmt->bindParam(':volume', $sales[6]);
-            $stmt->bindParam(':tire_type', $sales[7]);
+            $date = $sales[0];
+            $dsr_name = $sales[1];
+            $customer_name = $sales[2];
+            $sector = $sales[3];
+            $product_family = $sales[4];
+            $sku_code = $sales[5];
+            $volume = $sales[6];
+            $tire_type = $sales[7];
+            
+            $stmt->bindParam(':date', $date);
+            $stmt->bindParam(':dsr_name', $dsr_name);
+            $stmt->bindParam(':customer_name', $customer_name);
+            $stmt->bindParam(':sector', $sector);
+            $stmt->bindParam(':product_family', $product_family);
+            $stmt->bindParam(':sku_code', $sku_code);
+            $stmt->bindParam(':volume', $volume);
+            $stmt->bindParam(':tire_type', $tire_type);
             
             $stmt->execute();
         }
