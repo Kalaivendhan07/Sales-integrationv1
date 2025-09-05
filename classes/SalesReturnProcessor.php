@@ -123,7 +123,7 @@ class SalesReturnProcessor {
         }
         
         if ($newVolume == 0) {
-            $result['messages'][] = 'Full return completed - opportunity reset to prospecting state';
+            $result['messages'][] = 'Full return completed - opportunity moved to Suspect stage (requires investigation)';
         } else {
             $result['messages'][] = 'Partial return - opportunity remains active with reduced volume';
         }
