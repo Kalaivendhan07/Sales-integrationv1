@@ -100,7 +100,7 @@ echo "📋 TEST 2: Different Product Family (Should be CROSS-SELL)\n";
 echo "══════════════════════════════════════════════════════════════════\n";
 
 $salesData2 = array(
-    'registration_no' => '29TESTUP1234A1Z5',
+    'registration_no' => '29TESTUP1234A1Z',
     'customer_name' => 'Test Corp Ltd',
     'dsr_name' => 'Test DSR',
     'product_family_name' => 'Shell Premium',  // DIFFERENT PRODUCT FAMILY
