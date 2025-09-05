@@ -58,7 +58,7 @@ class DebugBatchPerformance {
         
         // Test 1: Existing customer record
         $existingCustomer = array(
-            'registration_no' => '29PERF0001A1Z1',
+            'registration_no' => '29PERFA0001A1Z1',
             'customer_name' => 'Debug Test Customer 1',
             'dsr_name' => 'DSR_A',
             'product_family_name' => 'Shell Ultra',
