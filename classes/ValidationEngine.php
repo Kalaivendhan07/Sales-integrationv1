@@ -327,9 +327,17 @@ class ValidationEngine {
         $oldData = $stmt->fetch(PDO::FETCH_ASSOC);
         $oldValue = $oldData[$fieldName];
         
-        // Update field
-        $stmt = $this->db->prepare("UPDATE isteer_general_lead SET $fieldName = :value WHERE id = :id");
+        // Update field and mark as integration-managed with timestamp
+        $stmt = $this->db->prepare("
+            UPDATE isteer_general_lead 
+            SET $fieldName = :value, 
+                integration_managed = 1, 
+                integration_batch_id = :batch_id,
+                last_integration_update = NOW()
+            WHERE id = :id
+        ");
         $stmt->bindParam(':value', $newValue);
+        $stmt->bindParam(':batch_id', $batchId);
         $stmt->bindParam(':id', $opportunityId);
         $stmt->execute();
         
