@@ -283,7 +283,7 @@ class EnhancedValidationEngine {
             } else {
                 // Create new "Order" opportunity for new product
                 $newOrderData = $salesData;
-                $newOrderData['opportunity_type'] = 'New Product';
+                $newOrderData['opp_type'] = 'New Product';
                 $newOrderData['original_entered_date'] = $opportunity['entered_date_time'];
                 $this->createNewOpportunity($newOrderData, $batchId);
                 $result['messages'][] = 'New Product opportunity created from Retention';
