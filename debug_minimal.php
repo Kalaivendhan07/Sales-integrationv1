@@ -40,7 +40,11 @@ try {
     
     echo "✅ Validation completed successfully\n";
     echo "Status: " . $result['status'] . "\n";
-    echo "Messages: " . implode(', ', $result['messages']) . "\n";
+    if (isset($result['messages']) && is_array($result['messages'])) {
+        echo "Messages: " . implode(', ', $result['messages']) . "\n";
+    } else {
+        echo "Messages: " . (isset($result['messages']) ? $result['messages'] : 'None') . "\n";
+    }
     
 } catch (Exception $e) {
     echo "❌ Error caught: " . $e->getMessage() . "\n";
