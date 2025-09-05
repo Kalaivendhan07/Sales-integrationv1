@@ -201,12 +201,29 @@ class EnhancedValidationEngine {
         $salesProduct = $salesData['product_family_name'];
         
         // Check if sales product family matches any opportunity product family
-        if (!in_array($salesProduct, $oppProducts)) {
-            // Check if it's Cross-Sell or Retention based on previous year sales
+        if (in_array($salesProduct, $oppProducts)) {
+            // SAME PRODUCT FAMILY - Check for tier upgrade (Up-Sell)
+            $tierUpgrade = $this->checkTierUpgradeForSameProduct($opportunityId, $salesData);
+            if ($tierUpgrade['is_upgrade']) {
+                // Create Up-Sell opportunity for tier upgrade within same product family
+                $upSellData = $salesData;
+                $upSellData['opp_type'] = 'Up-Sell';
+                $upSellData['parent_opportunity_id'] = $opportunityId;
+                $upSellData['original_entered_date'] = $opportunity['entered_date_time'];
+                $upSellData['tier_upgrade_info'] = $tierUpgrade;
+                
+                $this->createNewOpportunity($upSellData, $batchId);
+                $result['needs_action'] = true;
+                $result['action'] = 'UP_SELL_OPPORTUNITY_CREATED';
+                $result['up_sell_created'] = true;
+            }
+            // If same product + same tier, no action needed (just volume addition in Level 6)
+        } else {
+            // DIFFERENT PRODUCT FAMILY - Check for Cross-Sell vs Retention
             $isRetention = $this->checkPreviousYearSales($salesData['registration_no'], $salesData['product_family_name']);
             
             if (!$isRetention) {
-                // Create Cross-Sell opportunity
+                // Create Cross-Sell opportunity for different product family
                 $crossSellData = $salesData;
                 $crossSellData['opp_type'] = 'Cross-Sell';
                 $crossSellData['parent_opportunity_id'] = $opportunityId;
@@ -215,25 +232,13 @@ class EnhancedValidationEngine {
                 $this->createNewOpportunity($crossSellData, $batchId);
                 $result['needs_action'] = true;
                 $result['action'] = 'CROSS_SELL_OPPORTUNITY_CREATED';
+                $result['cross_sell_created'] = true;
             } else {
                 // It's retention - log but no action
                 if ($this->auditLogger) {
-                    $this->auditLogger->logChange(
-                        $opportunityId,
-                        'retention_validation',
-                        'No Cross-Sell needed',
-                        'Previous year sales found for ' . $salesProduct,
-                        $batchId
-                    );
+                    $this->auditLogger->logAction($opportunityId, 'product_retention', 
+                        'Retention identified for ' . $salesProduct, $batchId);
                 }
-            }
-        } else {
-            // Product matches - check if opportunity has multiple products for splitting
-            if (count($oppProducts) > 1) {
-                // Split opportunity for matched product
-                $this->splitOpportunityForProductEnhanced($opportunity, $salesData, $batchId, $opportunityId);
-                $result['needs_action'] = true;
-                $result['action'] = 'OPPORTUNITY_SPLIT_FOR_PRODUCT';
             }
         }
         
