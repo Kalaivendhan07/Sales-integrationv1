@@ -381,9 +381,6 @@ class EnhancedValidationEngine {
             $stmt->bindParam(':product_id', $salesData['sku_code']); // Using SKU as product_id
             $stmt->bindParam(':product_name', $salesData['sku_code']);
             $stmt->bindParam(':volume', $salesData['volume']);
-            $stmt->bindParam(':product_pack', $salesData['product_family_name']);
-            $dsr_id = $this->getDSRId($salesData['dsr_name']);
-            $stmt->bindParam(':dsr_id', $dsr_id);
             $stmt->execute();
         }
     }
