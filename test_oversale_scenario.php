@@ -216,7 +216,7 @@ echo "\n📊 STEP 7: Volume discrepancy tracking details...\n";
 echo "════════════════════════════════════════════════════════════════\n";
 
 $stmt = $db->prepare("
-    SELECT opportunity_volume, sales_volume, discrepancy_type, 
+    SELECT opportunity_volume, discrepancy_type, 
            discrepancy_volume, discrepancy_percentage, tracked_on
     FROM volume_discrepancy_tracking 
     WHERE registration_no = ?
@@ -229,7 +229,6 @@ if (!empty($discrepancyRecords)) {
     foreach ($discrepancyRecords as $discrepancy) {
         echo "   📊 Discrepancy Type: " . $discrepancy['discrepancy_type'] . "\n";
         echo "       Opportunity Volume: " . $discrepancy['opportunity_volume'] . "L\n";
-        echo "       Sales Volume: " . $discrepancy['sales_volume'] . "L\n";
         echo "       Discrepancy Volume: " . $discrepancy['discrepancy_volume'] . "L\n";
         echo "       Discrepancy Percentage: " . $discrepancy['discrepancy_percentage'] . "%\n";
         echo "       Tracked On: " . $discrepancy['tracked_on'] . "\n";
