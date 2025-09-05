@@ -550,12 +550,12 @@ class ComprehensiveTestSuite {
             $stmt = $this->db->prepare("
                 UPDATE isteer_general_lead 
                 SET volume_converted = 800, lead_status = 'Order', integration_managed = 1 
-                WHERE registration_no = '29AATEST2222B1Z'
+                WHERE registration_no = '29AAATE2222B1Z5'
             ");
             $stmt->execute();
             
             $returnData = array(
-                'registration_no' => '29AATEST2222B1Z',
+                'registration_no' => '29AAATE2222B1Z5',
                 'customer_name' => 'Test Corp Beta',
                 'product_family_name' => 'Shell Pro',
                 'return_volume' => $test['return_volume'],
@@ -568,7 +568,7 @@ class ComprehensiveTestSuite {
             // Check final stage
             $stmt = $this->db->prepare("
                 SELECT lead_status FROM isteer_general_lead 
-                WHERE registration_no = '29AATEST2222B1Z'
+                WHERE registration_no = '29AAATE2222B1Z5'
             ");
             $stmt->execute();
             $finalStage = $stmt->fetch(PDO::FETCH_ASSOC)['lead_status'];
