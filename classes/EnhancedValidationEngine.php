@@ -111,7 +111,7 @@ class EnhancedValidationEngine {
             SELECT id, cus_name, dsr_id, dsr_name, sector, product_name, 
                    product_name_2, product_name_3, lead_status, volume_converted 
             FROM isteer_general_lead 
-            WHERE registration_no = :gstin AND status = 'A'
+            WHERE registration_no = :gstin
             LIMIT 1
         ");
         $stmt->bindParam(':gstin', $salesData['registration_no']);
