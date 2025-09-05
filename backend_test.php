@@ -99,9 +99,10 @@ class BackendTestSuite {
         
         foreach ($testCases as $gstin => $expected) {
             $result = $method->invoke($this->enhancedEngine, $gstin);
-            $status = ($result === $expected) ? "✅ PASS" : "❌ FAIL";
+            $resultBool = (bool)$result; // Convert to boolean
+            $status = ($resultBool === $expected) ? "✅ PASS" : "❌ FAIL";
             echo "   GSTIN: '$gstin' -> Expected: " . ($expected ? 'VALID' : 'INVALID') . 
-                 ", Got: " . ($result ? 'VALID' : 'INVALID') . " $status\n";
+                 ", Got: " . ($resultBool ? 'VALID' : 'INVALID') . " $status\n";
         }
         echo "\n";
     }
