@@ -147,10 +147,10 @@ class BackendTestSuite {
         }
         
         // Test with new customer
-        echo "\n  🧪 Testing with new customer (29AATEST9999N1Z):\n";
+        echo "\n  🧪 Testing with new customer (29AATEST9999N1ZZ):\n";
         
         $newCustomerData = array(
-            'registration_no' => '29AATEST9999N1Z',
+            'registration_no' => '29AATEST9999N1ZZ',
             'customer_name' => 'New Backend Test Corp',
             'dsr_name' => 'DSR New Backend',
             'product_family_name' => 'Shell New',
