@@ -510,18 +510,18 @@ class EnhancedValidationEngine {
         $stmt = $this->db->prepare("
             INSERT INTO isteer_general_lead (
                 cus_name, registration_no, dsr_name, sector, sub_sector,
-                product_name, opportunity_name, opportunity_type, lead_status,
+                product_name, opportunity_name, opp_type, lead_status,
                 volume_converted, source_from, integration_managed, 
                 integration_batch_id, last_integration_update, entered_date_time
             ) VALUES (
                 :cus_name, :registration_no, :dsr_name, :sector, :sub_sector,
-                :product_name, :opportunity_name, :opportunity_type, :lead_status,
+                :product_name, :opportunity_name, :opp_type, :lead_status,
                 :volume_converted, :source_from, 1, :batch_id, NOW(), :entered_date_time
             )
         ");
         
         $opportunityName = $salesData['customer_name'];
-        $opportunityType = isset($salesData['opportunity_type']) ? $salesData['opportunity_type'] : 'New Customer';
+        $oppType = isset($salesData['opportunity_type']) ? $salesData['opportunity_type'] : 'New Customer';
         $leadStatus = 'Order';
         $sourceFrom = 'Sales Integration';
         
@@ -535,7 +535,7 @@ class EnhancedValidationEngine {
         $stmt->bindParam(':sub_sector', $salesData['sub_sector']);
         $stmt->bindParam(':product_name', $salesData['product_family_name']);
         $stmt->bindParam(':opportunity_name', $opportunityName);
-        $stmt->bindParam(':opportunity_type', $opportunityType);
+        $stmt->bindParam(':opp_type', $oppType);
         $stmt->bindParam(':lead_status', $leadStatus);
         $stmt->bindParam(':volume_converted', $salesData['volume']);
         $stmt->bindParam(':source_from', $sourceFrom);
