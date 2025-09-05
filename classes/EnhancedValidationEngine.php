@@ -70,6 +70,13 @@ class EnhancedValidationEngine {
                 $result['cross_sell_created'] = true;
                 $result['messages'][] = 'Cross-Sell opportunity created for different product family';
             }
+            if (isset($level3Result['opportunity_split']) && $level3Result['opportunity_split']) {
+                $result['opportunity_split'] = true;
+                $result['split_opportunity_id'] = $level3Result['split_opportunity_id'];
+                $result['messages'] = array_merge($result['messages'], $level3Result['messages']);
+                // CRITICAL: Exit early when splitting occurs - no further processing needed
+                return $result;
+            }
             
             // Level 4: Sector Validation
             $level4Result = $this->level4_SectorValidation($salesData, $opportunityId, $batchId);
