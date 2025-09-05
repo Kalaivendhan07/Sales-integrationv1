@@ -358,8 +358,7 @@ class EnhancedValidationEngine {
             $stmt = $this->db->prepare("
                 UPDATE isteer_opportunity_products 
                 SET volume = volume + :volume,
-                    updated_by = 'INTEGRATION_SYSTEM',
-                    updated_date = NOW()
+                    added_date = NOW()
                 WHERE id = :id
             ");
             $stmt->bindParam(':volume', $salesData['volume']);
