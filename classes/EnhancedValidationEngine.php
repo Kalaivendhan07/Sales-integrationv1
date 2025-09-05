@@ -240,7 +240,7 @@ class EnhancedValidationEngine {
         
         // Get current opportunity details
         $stmt = $this->db->prepare("
-            SELECT lead_status, volume_converted, annual_potential, py_billed_volume,
+            SELECT lead_status, volume_converted, annual_potential,
                    product_name, registration_no, cus_name, dsr_name, sector, sub_sector,
                    entered_date_time
             FROM isteer_general_lead WHERE id = :id
