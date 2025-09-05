@@ -125,9 +125,11 @@ class EnhancedValidationEngine {
             // Create new opportunity
             $opportunityId = $this->createNewOpportunity($salesData, $batchId);
             $result['opportunity_id'] = $opportunityId;
+            $result['opportunity_created'] = true;
             $result['message'] = 'New opportunity created';
         } else {
             $result['opportunity_id'] = $opportunity['id'];
+            $result['opportunity_created'] = false;
             $result['message'] = 'Existing opportunity found';
         }
         
