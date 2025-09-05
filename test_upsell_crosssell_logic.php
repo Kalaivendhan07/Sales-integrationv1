@@ -17,8 +17,8 @@ $auditLogger = new AuditLogger();
 $enhancedEngine = new EnhancedValidationEngine($auditLogger);
 
 // Clean up test data first
-$db->exec("UPDATE isteer_general_lead SET integration_managed = 0 WHERE registration_no = '29TESTUP1234A1Z5'");
-$db->exec("DELETE FROM isteer_general_lead WHERE registration_no = '29TESTUP1234A1Z5'");
+$db->exec("UPDATE isteer_general_lead SET integration_managed = 0 WHERE registration_no = '29TESTUP1234A1Z'");
+$db->exec("DELETE FROM isteer_general_lead WHERE registration_no = '29TESTUP1234A1Z'");
 
 // Setup: Create existing opportunity with Shell Ultra (Mainstream tier)
 $stmt = $db->prepare("
@@ -27,7 +27,7 @@ $stmt = $db->prepare("
         product_name, opportunity_name, lead_status, volume_converted, annual_potential,
         source_from, integration_managed, integration_batch_id, entered_date_time
     ) VALUES (
-        'Test Corp Ltd', '29TESTUP1234A1Z5', 'Test DSR', 101,
+        'Test Corp Ltd', '29TESTUP1234A1Z', 'Test DSR', 101,
         'Manufacturing', 'Industrial', 'Shell Ultra', 
         'Test Corp Opportunity', 'Qualified', 200.00, 1000.00,
         'CRM System', 1, 'TEST_BATCH', '2025-01-01 10:00:00'
