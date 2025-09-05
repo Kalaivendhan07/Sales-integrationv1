@@ -40,7 +40,7 @@ function testGSTINValidation($gstin) {
 
 // Test the updated samples
 testGSTINValidation('29PERFA00011Z1');
-testGSTIN Validation('29NEWAB20112Z1');
+testGSTINValidation('29NEWAB20112Z1');
 testGSTINValidation('29PERFA00051Z5');
 
 echo "\n=== COMPARISON WITH WORKING GSTIN ===\n";
