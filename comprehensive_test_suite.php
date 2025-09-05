@@ -463,13 +463,21 @@ class ComprehensiveTestSuite {
         echo "📋 TEST 7: UP-SELL DETECTION (TIER UPGRADE)\n";
         echo "════════════════════════════════════════════════════════════════\n";
         
-        // First, insert a Mainstream tier SKU for the opportunity
+        // First, set the existing opportunity to Retention stage for Up-Sell testing
+        $stmt = $this->db->prepare("
+            UPDATE isteer_general_lead 
+            SET lead_status = 'Retention', product_name = 'Shell Ultra'
+            WHERE registration_no = '29AAATE1111A1Z5'
+        ");
+        $stmt->execute();
+        
+        // Insert a Mainstream tier SKU for the opportunity
         $stmt = $this->db->prepare("
             INSERT INTO isteer_opportunity_products (
-                lead_id, product_id, product_name, volume, status, added_by, added_date
+                lead_id, product_id, product_name, volume, tier, status, added_by, added_date
             ) VALUES (
                 (SELECT id FROM isteer_general_lead WHERE registration_no = '29AAATE1111A1Z5' LIMIT 1),
-                'SKU001', 'SKU001', 100, 'A', 'TEST_SETUP', NOW()
+                'SKU001', 'Shell Ultra', 100, 'Mainstream', 'A', 'TEST_SETUP', NOW()
             )
         ");
         $stmt->execute();
@@ -478,8 +486,8 @@ class ComprehensiveTestSuite {
             'registration_no' => '29AAATE1111A1Z5',
             'customer_name' => 'Test Corp Alpha',
             'dsr_name' => 'DSR Alpha',
-            'product_family_name' => 'Shell Ultra',
-            'sku_code' => 'SKU001',
+            'product_family_name' => 'Shell Ultra',  // SAME product family
+            'sku_code' => 'SKU001_PREMIUM',
             'volume' => '200.00',
             'sector' => 'Technology',
             'sub_sector' => 'Software',
