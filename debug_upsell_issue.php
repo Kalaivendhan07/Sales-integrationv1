@@ -13,7 +13,7 @@ $db = $database->getConnection();
 
 // Check the test opportunity setup
 $stmt = $db->prepare("
-    SELECT id, registration_no, product_name, product_name_2, product_name_3, stage
+    SELECT id, registration_no, product_name, product_name_2, product_name_3, lead_status
     FROM isteer_general_lead 
     WHERE registration_no = '29AAATE1111A1Z5'
     LIMIT 1
