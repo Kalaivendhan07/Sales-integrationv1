@@ -612,7 +612,7 @@ class ComprehensiveTestSuite {
         // Count opportunities after
         $stmt = $this->db->prepare("
             SELECT COUNT(*) as count FROM isteer_general_lead 
-            WHERE registration_no = '29AATEST1111A1Z'
+            WHERE registration_no = '29AAATE1111A1Z5'
         ");
         $stmt->execute();
         $countAfter = $stmt->fetch(PDO::FETCH_ASSOC)['count'];
