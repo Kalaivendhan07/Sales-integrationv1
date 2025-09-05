@@ -90,8 +90,8 @@ class BackendTestSuite {
         $method->setAccessible(true);
         
         $testCases = array(
-            '29AATEST0001B1ZX' => true,  // Valid format (16 chars)
-            '29AATEST1111A1ZY' => true,  // Valid format (16 chars)
+            '29AATEST0001B1X' => true,   // Valid format (15 chars)
+            '29AATEST1111A1Y' => true,   // Valid format (15 chars)
             'INVALID_GSTIN' => false,    // Invalid format
             '29AATEST' => false,         // Too short
             '' => false                  // Empty
