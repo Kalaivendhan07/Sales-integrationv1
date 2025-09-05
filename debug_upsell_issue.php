@@ -26,7 +26,7 @@ if ($opportunity) {
     echo "   ID: " . $opportunity['id'] . "\n";
     echo "   GSTIN: " . $opportunity['registration_no'] . "\n";
     echo "   Products: " . $opportunity['product_name'] . "\n";
-    echo "   Stage: " . $opportunity['stage'] . "\n\n";
+    echo "   Stage: " . $opportunity['lead_status'] . "\n\n";
     
     // Check existing sales records for this GSTIN
     $stmt = $db->prepare("
