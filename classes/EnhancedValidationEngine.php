@@ -368,25 +368,62 @@ class EnhancedValidationEngine {
     
     /**
      * Check for tier upgrade (Mainstream to Premium)
+     * Based on existing opportunity in Retention stage with Mainstream tier product
+     * and new sales with Premium tier for same product family
      */
     private function checkTierUpgrade($opportunityId, $salesData) {
         $result = array('is_upgrade' => false, 'from_tier' => '', 'to_tier' => '');
         
-        // Get current SKU tier from opportunity products
+        // First check if the existing opportunity is in Retention stage
         $stmt = $this->db->prepare("
-            SELECT op.product_name, s.tire_type as current_tier
-            FROM isteer_opportunity_products op
-            LEFT JOIN isteer_sales_upload_master s ON op.product_name = s.sku_code
-            WHERE op.lead_id = :lead_id AND s.registration_no = (
-                SELECT registration_no FROM isteer_general_lead WHERE id = :lead_id2
-            )
-            ORDER BY s.created_at DESC
+            SELECT lead_status, product_name, product_name_2, product_name_3 
+            FROM isteer_general_lead 
+            WHERE id = :lead_id
+        ");
+        $stmt->bindParam(':lead_id', $opportunityId);
+        $stmt->execute();
+        $opportunity = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if (!$opportunity || $opportunity['lead_status'] !== 'Retention') {
+            return $result; // Only check Up-Sell for Retention stage opportunities
+        }
+        
+        // Check if new sales product family matches existing opportunity products
+        $existingProducts = array_filter([
+            $opportunity['product_name'], 
+            $opportunity['product_name_2'], 
+            $opportunity['product_name_3']
+        ]);
+        
+        $isMatchingProduct = false;
+        foreach ($existingProducts as $product) {
+            if ($product && (stripos($product, $salesData['product_family_name']) !== false || 
+                            stripos($salesData['product_family_name'], $product) !== false)) {
+                $isMatchingProduct = true;
+                break;
+            }
+        }
+        
+        if (!$isMatchingProduct) {
+            return $result; // Not same product family
+        }
+        
+        // Get current tier from opportunity products table or assume Mainstream for Retention
+        $stmt = $this->db->prepare("
+            SELECT tier FROM isteer_opportunity_products 
+            WHERE lead_id = :lead_id 
+            ORDER BY created_at DESC 
             LIMIT 1
         ");
         $stmt->bindParam(':lead_id', $opportunityId);
-        $stmt->bindParam(':lead_id2', $opportunityId);
         $stmt->execute();
-        $currentTier = $stmt->fetch(PDO::FETCH_ASSOC);
+        $currentTierData = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        // For Retention opportunities, assume existing tier is Mainstream if not specified
+        $currentTier = $currentTierData ? $currentTierData['tier'] : 'Mainstream';
+        
+        // Get new tier from sales data
+        $newTier = isset($salesData['tire_type']) ? $salesData['tire_type'] : 'Mainstream';
         
         // Get new tier from sales data
         $salesTier = isset($salesData['tire_type']) ? $salesData['tire_type'] : 'Mainstream';
