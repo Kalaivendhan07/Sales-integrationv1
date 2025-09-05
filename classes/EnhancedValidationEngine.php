@@ -278,10 +278,11 @@ class EnhancedValidationEngine {
         $this->updateOpportunitySKUDetails($opportunityId, $salesData, $batchId);
         $result['sku_updated'] = true;
         
-        // Stage validation logic
-        if (in_array($currentStage, array('SPANCOP', 'Lost', 'Sleep'))) {
+        // Stage validation logic - Complete stage transition rules
+        if (in_array($currentStage, array('SPANCOP', 'Lost', 'Sleep', 'Prospect', 'Qualified', 'Suspect'))) {
+            // Any of these stages should transition to Order when sales occur
             $this->updateOpportunityField($opportunityId, 'lead_status', 'Order', $batchId);
-            $result['messages'][] = 'Stage updated to Order';
+            $result['messages'][] = 'Stage updated from ' . $currentStage . ' to Order';
         } else if ($currentStage == 'Retention') {
             // Special handling for Retention stage
             if ($this->hasPreviousYearSales($salesData['registration_no'], $salesData['sku_code'])) {
@@ -294,6 +295,9 @@ class EnhancedValidationEngine {
                 $this->createNewOpportunity($newOrderData, $batchId);
                 $result['messages'][] = 'New Product opportunity created from Retention';
             }
+        } else if ($currentStage == 'Order') {
+            // Already in Order stage - just add volume
+            $result['messages'][] = 'Order stage maintained - additional volume added';
         }
         
         // Volume updates - only for existing opportunities, not new ones
