@@ -209,7 +209,7 @@ class ComprehensiveTestSuite {
             array(
                 'name' => 'Valid GSTIN - New Customer',
                 'data' => array(
-                    'registration_no' => '29AATEST9999N1Z',
+                    'registration_no' => '29AAATE9999N1Z5',
                     'customer_name' => 'New Test Corp',
                     'dsr_name' => 'DSR New',
                     'product_family_name' => 'Shell New',
