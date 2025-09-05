@@ -361,6 +361,41 @@ class EnhancedValidationEngine {
     }
     
     /**
+     * Check for tier upgrade within same product family (Mainstream to Premium)
+     */
+    private function checkTierUpgradeForSameProduct($opportunityId, $salesData) {
+        $result = array('is_upgrade' => false, 'from_tier' => '', 'to_tier' => '');
+        
+        // Get current tier for the same product family from opportunity
+        $stmt = $this->db->prepare("
+            SELECT s.tire_type as current_tier, s.sku_code
+            FROM isteer_sales_upload_master s
+            INNER JOIN isteer_general_lead gl ON s.registration_no = gl.registration_no
+            WHERE gl.id = :lead_id 
+            AND s.product_family_name = :product_family
+            ORDER BY s.created_at DESC
+            LIMIT 1
+        ");
+        $stmt->bindParam(':lead_id', $opportunityId);
+        $stmt->bindParam(':product_family', $salesData['product_family_name']);
+        $stmt->execute();
+        $currentTier = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        // Get new tier from sales data
+        $salesTier = isset($salesData['tire_type']) ? $salesData['tire_type'] : 'Mainstream';
+        
+        if ($currentTier && $currentTier['current_tier'] == 'Mainstream' && $salesTier == 'Premium') {
+            $result['is_upgrade'] = true;
+            $result['from_tier'] = 'Mainstream';
+            $result['to_tier'] = 'Premium';
+            $result['from_sku'] = $currentTier['sku_code'];
+            $result['to_sku'] = $salesData['sku_code'];
+        }
+        
+        return $result;
+    }
+    
+    /**
      * Update opportunity SKU details
      */
     private function updateOpportunitySKUDetails($opportunityId, $salesData, $batchId) {
