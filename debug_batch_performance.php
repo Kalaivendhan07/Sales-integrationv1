@@ -102,7 +102,7 @@ class DebugBatchPerformance {
         
         // Test 2: New customer record
         $newCustomer = array(
-            'registration_no' => '29NEW00001B2Y1',
+            'registration_no' => '29NEWAB0201B2Z1',
             'customer_name' => 'New Debug Customer 1',
             'dsr_name' => 'DSR_B',
             'product_family_name' => 'Shell Premium',
