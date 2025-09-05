@@ -267,7 +267,7 @@ class BackendTestSuite {
             // Check final stage in database
             $stmt = $this->db->prepare("
                 SELECT lead_status, volume_converted FROM isteer_general_lead 
-                WHERE registration_no = '29AATEST0001B1X'
+                WHERE registration_no = '29ABCDE0001F1Z5'
             ");
             $stmt->execute();
             $finalState = $stmt->fetch(PDO::FETCH_ASSOC);
