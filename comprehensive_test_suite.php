@@ -468,7 +468,7 @@ class ComprehensiveTestSuite {
             INSERT INTO isteer_opportunity_products (
                 lead_id, product_id, product_name, volume, status, added_by, added_date
             ) VALUES (
-                (SELECT id FROM isteer_general_lead WHERE registration_no = '29AATEST1111A1Z' LIMIT 1),
+                (SELECT id FROM isteer_general_lead WHERE registration_no = '29AAATE1111A1Z5' LIMIT 1),
                 'SKU001', 'SKU001', 100, 'A', 'TEST_SETUP', NOW()
             )
         ");
