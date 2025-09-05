@@ -890,15 +890,13 @@ class EnhancedValidationEngine {
         try {
             $oppProducts = array_filter(array($opportunity['product_name'], $opportunity['product_name_2'], $opportunity['product_name_3']));
             $salesProduct = $salesData['product_family_name'];
+            $opportunityId = $opportunity['id'];
             
             // Create new opportunity for the matched product (sales transaction)
             $newOpportunityData = $salesData;
             $newOpportunityData['opp_type'] = 'Product Split';
-            $newOpportunityData['parent_opportunity_id'] = $opportunity['id'];
+            $newOpportunityData['parent_opportunity_id'] = $opportunityId;
             $newOpportunityData['original_entered_date'] = $opportunity['entered_date_time'];
-            $newOpportunityData['lead_status'] = 'Order'; // Sales completed
-            $newOpportunityData['volume_converted'] = $salesData['volume'];
-            $newOpportunityData['annual_potential'] = $salesData['volume']; // Match sales volume
             
             $newOpportunityId = $this->createNewOpportunity($newOpportunityData, $batchId);
             
@@ -915,26 +913,20 @@ class EnhancedValidationEngine {
             $product3 = isset($remainingProductsArray[2]) ? $remainingProductsArray[2] : '';
             
             // Update original opportunity with remaining products
-            $this->updateOpportunityField($opportunity['id'], 'product_name', $product1, $batchId);
+            $this->updateOpportunityField($opportunityId, 'product_name', $product1, $batchId);
             if ($product2) {
-                $this->updateOpportunityField($opportunity['id'], 'product_name_2', $product2, $batchId);
+                $this->updateOpportunityField($opportunityId, 'product_name_2', $product2, $batchId);
             } else {
-                $this->updateOpportunityField($opportunity['id'], 'product_name_2', '', $batchId);
+                $this->updateOpportunityField($opportunityId, 'product_name_2', '', $batchId);
             }
             if ($product3) {
-                $this->updateOpportunityField($opportunity['id'], 'product_name_3', $product3, $batchId);
+                $this->updateOpportunityField($opportunityId, 'product_name_3', $product3, $batchId);
             } else {
-                $this->updateOpportunityField($opportunity['id'], 'product_name_3', '', $batchId);
+                $this->updateOpportunityField($opportunityId, 'product_name_3', '', $batchId);
             }
             
             // Update original opportunity potential
-            $this->updateOpportunityField($opportunity['id'], 'annual_potential', $newPotential, $batchId);
-            
-            // Log the split operation
-            if ($this->auditLogger) {
-                $this->auditLogger->logAction($opportunity['id'], 'opportunity_split', 
-                    'Split opportunity: ' . $salesProduct . ' moved to new opportunity ' . $newOpportunityId, $batchId);
-            }
+            $this->updateOpportunityField($opportunityId, 'annual_potential', $newPotential, $batchId);
             
             $result['split_successful'] = true;
             $result['new_opportunity_id'] = $newOpportunityId;
