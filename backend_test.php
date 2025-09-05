@@ -241,12 +241,12 @@ class BackendTestSuite {
         $stmt = $this->db->prepare("
             UPDATE isteer_general_lead 
             SET volume_converted = 800, lead_status = 'Order' 
-            WHERE registration_no = '29AATEST0001B1Z'
+            WHERE registration_no = '29AATEST0001B1ZX'
         ");
         $stmt->execute();
         
         $returnData = array(
-            'registration_no' => '29AATEST0001B1Z',
+            'registration_no' => '29AATEST0001B1ZX',
             'customer_name' => 'Backend Test Corp',
             'product_family_name' => 'Shell Ultra',
             'return_volume' => '800.00', // Full return
