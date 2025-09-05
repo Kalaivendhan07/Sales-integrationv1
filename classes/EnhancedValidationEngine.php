@@ -369,11 +369,11 @@ class EnhancedValidationEngine {
             // Insert new SKU
             $stmt = $this->db->prepare("
                 INSERT INTO isteer_opportunity_products (
-                    lead_id, product_id, product_name, volume, product_pack,
-                    dsr_id, status, added_by, added_date
+                    lead_id, product_id, product_name, volume,
+                    status, added_by, added_date
                 ) VALUES (
-                    :lead_id, :product_id, :product_name, :volume, :product_pack,
-                    :dsr_id, 'A', 'INTEGRATION_SYSTEM', NOW()
+                    :lead_id, :product_id, :product_name, :volume,
+                    'A', 'INTEGRATION_SYSTEM', NOW()
                 )
             ");
             
