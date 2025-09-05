@@ -297,12 +297,12 @@ class BackendTestSuite {
         $stmt = $this->db->prepare("
             UPDATE isteer_general_lead 
             SET volume_converted = 500 
-            WHERE registration_no = '29AATEST0001B1X'
+            WHERE registration_no = '29ABCDE0001F1Z5'
         ");
         $stmt->execute();
         
         $salesData = array(
-            'registration_no' => '29AATEST0001B1X',
+            'registration_no' => '29ABCDE0001F1Z5',
             'customer_name' => 'Backend Test Corp',
             'dsr_name' => 'DSR Backend',
             'product_family_name' => 'Shell Ultra',
