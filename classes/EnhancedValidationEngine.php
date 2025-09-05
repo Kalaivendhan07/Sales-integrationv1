@@ -233,7 +233,7 @@ class EnhancedValidationEngine {
                     $result['action'] = 'OPPORTUNITY_SPLIT_COMPLETED';
                     $result['opportunity_split'] = true;
                     $result['split_opportunity_id'] = $splitResult['new_opportunity_id'];
-                    $result['messages'][] = 'Multi-product opportunity split: ' . $salesProduct . ' separated from ' . implode('+', array_diff($oppProducts, array($salesProduct)));
+                    $result['messages'] = array('Multi-product opportunity split: ' . $salesProduct . ' separated from ' . implode('+', array_diff($oppProducts, array($salesProduct))));
                     return $result; // Exit early - splitting handles everything
                 }
             } else {
