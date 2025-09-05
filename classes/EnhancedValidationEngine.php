@@ -182,7 +182,7 @@ class EnhancedValidationEngine {
         $stmt = $this->db->prepare("
             SELECT product_name, product_name_2, product_name_3, annual_potential, 
                    cus_name, registration_no, dsr_id, dsr_name, sector, sub_sector,
-                   opportunity_name, opportunity_type, entered_date_time
+                   opportunity_name, opp_type, entered_date_time
             FROM isteer_general_lead WHERE id = :id
         ");
         $stmt->bindParam(':id', $opportunityId);
