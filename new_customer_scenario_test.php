@@ -169,7 +169,7 @@ class NewCustomerScenarioTest {
         // Check for audit trail
         echo "\n📝 Audit Trail:\n";
         $stmt = $this->db->prepare("
-            SELECT action_type, field_name, old_value, new_value, data_changed_on 
+            SELECT field_name, old_value, new_value, data_changed_on 
             FROM integration_audit_log 
             WHERE lead_id = (SELECT id FROM isteer_general_lead WHERE registration_no = '33AAGCA2111H1ZD' ORDER BY id DESC LIMIT 1)
             ORDER BY data_changed_on DESC
@@ -180,7 +180,7 @@ class NewCustomerScenarioTest {
         
         if (!empty($auditRecords)) {
             foreach ($auditRecords as $record) {
-                echo "   📊 " . $record['action_type'] . ": " . $record['field_name'] . 
+                echo "   📊 " . $record['field_name'] . 
                      " (" . $record['old_value'] . " → " . $record['new_value'] . 
                      ") at " . $record['data_changed_on'] . "\n";
             }
