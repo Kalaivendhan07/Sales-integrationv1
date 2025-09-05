@@ -54,7 +54,7 @@ $stmt = $db->prepare("
         sku_code, volume, registration_no, tire_type
     ) VALUES (
         '2025-01-01', 'Test DSR', 'Test Corp Ltd', 'Manufacturing', 'Shell Ultra',
-        'SHELL_ULTRA_MAIN', 200.00, '29TESTUP1234A1Z5', 'Mainstream'
+        'SHELL_ULTRA_MAIN', 200.00, '29TESTUP1234A1Z', 'Mainstream'
     )
 ");
 $stmt->execute();
