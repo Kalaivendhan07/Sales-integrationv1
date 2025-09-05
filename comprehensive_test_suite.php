@@ -60,7 +60,7 @@ class ComprehensiveTestSuite {
             // Customer 1: Multi-product opportunity
             array(
                 'cus_name' => 'Test Corp Alpha',
-                'registration_no' => '29AATEST1111A1Z',
+                'registration_no' => '29AAATE1111A1Z5',
                 'dsr_name' => 'DSR Alpha',
                 'dsr_id' => 101,
                 'products' => array('Shell Ultra', 'Shell Premium', 'Shell Basic'),
@@ -71,7 +71,7 @@ class ComprehensiveTestSuite {
             // Customer 2: Single product opportunity
             array(
                 'cus_name' => 'Test Corp Beta',
-                'registration_no' => '29AATEST2222B1Z',
+                'registration_no' => '29AAATE2222B1Z5',
                 'dsr_name' => 'DSR Beta',
                 'dsr_id' => 102,
                 'products' => array('Shell Pro'),
@@ -82,7 +82,7 @@ class ComprehensiveTestSuite {
             // Customer 3: SPANCOP stage
             array(
                 'cus_name' => 'Test Corp Gamma',
-                'registration_no' => '29AATEST3333G1Z',
+                'registration_no' => '29AAATE3333G1Z5',
                 'dsr_name' => 'DSR Gamma',
                 'dsr_id' => 103,
                 'products' => array('Shell Advanced'),
@@ -93,7 +93,7 @@ class ComprehensiveTestSuite {
             // Customer 4: Retention stage
             array(
                 'cus_name' => 'Test Corp Delta',
-                'registration_no' => '29AATEST4444D1Z',
+                'registration_no' => '29AAATE4444D1Z5',
                 'dsr_name' => 'DSR Delta',
                 'dsr_id' => 104,
                 'products' => array('Shell Retention'),
