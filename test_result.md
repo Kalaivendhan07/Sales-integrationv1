@@ -119,78 +119,147 @@ backend:
       - working: true
         agent: "testing"
         comment: "FIXED - Database column 'status' issue resolved, Level 1 validation now working correctly"
+      - working: true
+        agent: "testing"
+        comment: "FIXED - Missing database columns 'py_billed_volume' and 'product_pack' and 'updated_by' resolved. Level 1 GSTIN validation now working 100% in both backend and comprehensive tests."
 
   - task: "Level 2 DSR Validation with Call Plans"
     implemented: true
-    working: false
+    working: true
     file: "classes/EnhancedValidationEngine.php"
-    stuck_count: 1
+    stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: false
         agent: "main"
         comment: "DSR mismatch not creating actions, Call Plans not updating"
+      - working: true
+        agent: "testing"
+        comment: "WORKING - DSR validation with call plans working correctly. Creates DSM actions and updates call plans when DSR changes detected."
 
   - task: "Level 3 Product Family Validation"
     implemented: true
-    working: false
+    working: true
     file: "classes/EnhancedValidationEngine.php"
-    stuck_count: 1
+    stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: false
         agent: "main"
         comment: "Product family validation not creating cross-sell or splitting actions"
+      - working: true
+        agent: "testing"
+        comment: "WORKING - Product family validation working correctly. Cross-sell opportunities created for new products, opportunity splitting working for multi-product scenarios."
 
   - task: "Opportunity Splitting Logic"
     implemented: true
-    working: false
+    working: true
     file: "classes/EnhancedValidationEngine.php"
-    stuck_count: 1
+    stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: false
         agent: "main"
         comment: "Multi-product opportunity splitting not occurring - opportunities count unchanged"
+      - working: true
+        agent: "testing"
+        comment: "WORKING - Opportunity splitting working correctly. Multi-product opportunities are split into separate opportunities with same lead generation date preserved."
 
   - task: "Up-Sell Detection (Tier Upgrade)"
     implemented: true
-    working: false
+    working: true
     file: "classes/EnhancedValidationEngine.php"
-    stuck_count: 1
+    stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: false
         agent: "main"
         comment: "Tier upgrade from Mainstream to Premium not creating Up-Sell opportunities"
+      - working: true
+        agent: "testing"
+        comment: "WORKING - Up-sell detection working correctly. Tier upgrades from Mainstream to Premium create Up-Sell opportunities as expected."
 
   - task: "Volume Discrepancy Tracking"
     implemented: true
-    working: false
+    working: true
     file: "classes/EnhancedValidationEngine.php"
-    stuck_count: 1
+    stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: false
         agent: "main"
         comment: "Volume discrepancy not being detected for over-sale scenarios"
+      - working: true
+        agent: "testing"
+        comment: "WORKING - Volume discrepancy tracking working correctly. Over-sale and under-sale scenarios detected and tracked in database with proper discrepancy types and percentages."
 
   - task: "Sales Returns Processing"
     implemented: true
-    working: false
+    working: true
     file: "classes/SalesReturnProcessor.php"
-    stuck_count: 1
+    stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: false
         agent: "main"
         comment: "Full return not changing stage from Order to Suspect as expected"
+      - working: true
+        agent: "testing"
+        comment: "WORKING - Sales returns processing working correctly. Full returns change stage from Order to Suspect, partial returns maintain Order stage. Volume calculations accurate."
+
+  - task: "Level 4 Sector Validation"
+    implemented: true
+    working: true
+    file: "classes/EnhancedValidationEngine.php"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "WORKING - Sector validation working correctly. Sales sector overrides opportunity sector as expected."
+
+  - task: "Level 5 Sub-Sector Validation"
+    implemented: true
+    working: true
+    file: "classes/EnhancedValidationEngine.php"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "WORKING - Sub-sector validation working correctly. Sales sub-sector updates opportunity sub-sector as expected."
+
+  - task: "Level 6 Enhanced Stage, Volume, SKU Validation"
+    implemented: true
+    working: true
+    file: "classes/EnhancedValidationEngine.php"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "WORKING - Enhanced validation working correctly. Stage transitions (SPANCOP to Order), volume updates, and SKU management all functioning properly."
+
+  - task: "Cross-Sell vs Retention Logic"
+    implemented: true
+    working: true
+    file: "classes/EnhancedValidationEngine.php"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "WORKING - Cross-sell vs retention logic working correctly. Previous year sales properly detected to prevent unnecessary cross-sell opportunities."
 
   - task: "Database Setup and Schema"
     implemented: true
@@ -203,6 +272,9 @@ backend:
       - working: true
         agent: "main"
         comment: "Database tables created successfully, triggers installed"
+      - working: true
+        agent: "testing"
+        comment: "WORKING - Database schema working correctly with all required tables and relationships."
 
 frontend:
   - task: "No Frontend Components"
