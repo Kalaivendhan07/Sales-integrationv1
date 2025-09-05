@@ -7,7 +7,7 @@ echo "=== DETAILED MESSAGE DEBUG ===\n";
 
 // Test simple validation
 $salesData = array(
-    'registration_no' => '11NEWCUSTOMER1ZD',  
+    'registration_no' => '11AAGCA2111H1ZD',  // Valid GSTIN format
     'customer_name' => 'New Test Customer',
     'dsr_name' => 'Test DSR', 
     'product_family_name' => 'Test Product',
