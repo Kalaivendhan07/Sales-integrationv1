@@ -741,6 +741,9 @@ class ComprehensiveTestSuite {
         echo "🧹 CLEANING UP TEST DATA...\n";
         echo "════════════════════════════════════════════════════════════════\n";
         
+        // Set integration_managed to 0 before deleting to bypass trigger
+        $this->db->exec("UPDATE isteer_general_lead SET integration_managed = 0 WHERE registration_no LIKE '29AATEST%'");
+        
         // Clean up test opportunities
         $this->db->exec("DELETE FROM isteer_general_lead WHERE registration_no LIKE '29AATEST%'");
         
