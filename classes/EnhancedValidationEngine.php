@@ -218,7 +218,9 @@ class EnhancedValidationEngine {
             // SAME PRODUCT FAMILY - Check if splitting is required
             if (count($oppProducts) > 1) {
                 // MULTI-PRODUCT OPPORTUNITY + Sales matches ONE product = SPLIT REQUIRED
-                $splitResult = $this->splitMultiProductOpportunity($opportunity, $salesData, $batchId);
+                $opportunityWithId = $opportunity;
+                $opportunityWithId['id'] = $opportunityId; // Ensure ID is available
+                $splitResult = $this->splitMultiProductOpportunity($opportunityWithId, $salesData, $batchId);
                 if ($splitResult['split_successful']) {
                     $result['needs_action'] = true;
                     $result['action'] = 'OPPORTUNITY_SPLIT_COMPLETED';
