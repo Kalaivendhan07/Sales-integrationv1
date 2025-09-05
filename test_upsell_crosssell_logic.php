@@ -17,8 +17,8 @@ $auditLogger = new AuditLogger();
 $enhancedEngine = new EnhancedValidationEngine($auditLogger);
 
 // Clean up test data first
-$db->exec("UPDATE isteer_general_lead SET integration_managed = 0 WHERE registration_no = '29TESTUP1234A1ZQ'");
-$db->exec("DELETE FROM isteer_general_lead WHERE registration_no = '29TESTUP1234A1ZQ'");
+$db->exec("UPDATE isteer_general_lead SET integration_managed = 0 WHERE registration_no = '29TESTUP1234A1ZQQ'");
+$db->exec("DELETE FROM isteer_general_lead WHERE registration_no = '29TESTUP1234A1ZQQ'");
 
 // Setup: Create existing opportunity with Shell Ultra (Mainstream tier)
 $stmt = $db->prepare("
@@ -27,7 +27,7 @@ $stmt = $db->prepare("
         product_name, opportunity_name, lead_status, volume_converted, annual_potential,
         source_from, integration_managed, integration_batch_id, entered_date_time
     ) VALUES (
-        'Test Corp Ltd', '29TESTUP1234A1ZQ', 'Test DSR', 101,
+        'Test Corp Ltd', '29TESTUP1234A1ZQQ', 'Test DSR', 101,
         'Manufacturing', 'Industrial', 'Shell Ultra', 
         'Test Corp Opportunity', 'Qualified', 200.00, 1000.00,
         'CRM System', 1, 'TEST_BATCH', '2025-01-01 10:00:00'
@@ -54,7 +54,7 @@ $stmt = $db->prepare("
         sku_code, volume, registration_no, tire_type
     ) VALUES (
         '2025-01-01', 'Test DSR', 'Test Corp Ltd', 'Manufacturing', 'Shell Ultra',
-        'SHELL_ULTRA_MAIN', 200.00, '29TESTUP1234A1Z', 'Mainstream'
+        'SHELL_ULTRA_MAIN', 200.00, '29TESTUP1234A1ZQ', 'Mainstream'
     )
 ");
 $stmt->execute();
@@ -66,7 +66,7 @@ echo "📋 TEST 1: Same Product Family + Tier Upgrade (Should be UP-SELL)\n";
 echo "══════════════════════════════════════════════════════════════════\n";
 
 $salesData1 = array(
-    'registration_no' => '29TESTUP1234A1Z',
+    'registration_no' => '29TESTUP1234A1ZQ',
     'customer_name' => 'Test Corp Ltd',
     'dsr_name' => 'Test DSR',
     'product_family_name' => 'Shell Ultra',  // SAME PRODUCT FAMILY
@@ -90,7 +90,7 @@ if (isset($result1['up_sell_created']) && $result1['up_sell_created']) {
 }
 
 // Count opportunities after Test 1
-$stmt = $db->prepare("SELECT COUNT(*) as count FROM isteer_general_lead WHERE registration_no = '29TESTUP1234A1Z'");
+$stmt = $db->prepare("SELECT COUNT(*) as count FROM isteer_general_lead WHERE registration_no = '29TESTUP1234A1ZQ'");
 $stmt->execute();
 $count1 = $stmt->fetch(PDO::FETCH_ASSOC);
 echo "Opportunities after Test 1: " . $count1['count'] . " (Expected: 2)\n\n";
@@ -100,7 +100,7 @@ echo "📋 TEST 2: Different Product Family (Should be CROSS-SELL)\n";
 echo "══════════════════════════════════════════════════════════════════\n";
 
 $salesData2 = array(
-    'registration_no' => '29TESTUP1234A1Z',
+    'registration_no' => '29TESTUP1234A1ZQ',
     'customer_name' => 'Test Corp Ltd',
     'dsr_name' => 'Test DSR',
     'product_family_name' => 'Shell Premium',  // DIFFERENT PRODUCT FAMILY
@@ -129,7 +129,7 @@ if (isset($result2['cross_sell_created']) && $result2['cross_sell_created']) {
 }
 
 // Count opportunities after Test 2
-$stmt = $db->prepare("SELECT COUNT(*) as count FROM isteer_general_lead WHERE registration_no = '29TESTUP1234A1Z'");
+$stmt = $db->prepare("SELECT COUNT(*) as count FROM isteer_general_lead WHERE registration_no = '29TESTUP1234A1ZQ'");
 $stmt->execute();
 $count2 = $stmt->fetch(PDO::FETCH_ASSOC);
 echo "Opportunities after Test 2: " . $count2['count'] . " (Expected: 3)\n\n";
@@ -140,7 +140,7 @@ echo "════════════════════════�
 $stmt = $db->prepare("
     SELECT id, cus_name, product_name, opp_type, volume_converted, lead_status 
     FROM isteer_general_lead 
-    WHERE registration_no = '29TESTUP1234A1Z'
+    WHERE registration_no = '29TESTUP1234A1ZQ'
     ORDER BY id
 ");
 $stmt->execute();
@@ -156,10 +156,10 @@ foreach ($opportunities as $opp) {
 
 // Cleanup
 echo "\n🧹 Cleaning up test data...\n";
-$db->exec("UPDATE isteer_general_lead SET integration_managed = 0 WHERE registration_no = '29TESTUP1234A1Z'");
-$db->exec("DELETE FROM isteer_general_lead WHERE registration_no = '29TESTUP1234A1Z'");
+$db->exec("UPDATE isteer_general_lead SET integration_managed = 0 WHERE registration_no = '29TESTUP1234A1ZQ'");
+$db->exec("DELETE FROM isteer_general_lead WHERE registration_no = '29TESTUP1234A1ZQ'");
 $db->exec("DELETE FROM isteer_opportunity_products WHERE product_id LIKE 'SHELL_%'");
-$db->exec("DELETE FROM isteer_sales_upload_master WHERE registration_no = '29TESTUP1234A1Z'");
+$db->exec("DELETE FROM isteer_sales_upload_master WHERE registration_no = '29TESTUP1234A1ZQ'");
 $db->exec("DELETE FROM integration_audit_log WHERE integration_batch_id LIKE 'TEST_%'");
 echo "✅ Cleanup completed\n";
 
