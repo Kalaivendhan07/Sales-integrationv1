@@ -880,5 +880,74 @@ class EnhancedValidationEngine {
         
         return $result;
     }
+    
+    /**
+     * Split multi-product opportunity when sales data matches one product
+     */
+    private function splitMultiProductOpportunity($opportunity, $salesData, $batchId) {
+        $result = array('split_successful' => false);
+        
+        try {
+            $oppProducts = array_filter(array($opportunity['product_name'], $opportunity['product_name_2'], $opportunity['product_name_3']));
+            $salesProduct = $salesData['product_family_name'];
+            
+            // Create new opportunity for the matched product (sales transaction)
+            $newOpportunityData = $salesData;
+            $newOpportunityData['opp_type'] = 'Product Split';
+            $newOpportunityData['parent_opportunity_id'] = $opportunity['id'];
+            $newOpportunityData['original_entered_date'] = $opportunity['entered_date_time'];
+            $newOpportunityData['lead_status'] = 'Order'; // Sales completed
+            $newOpportunityData['volume_converted'] = $salesData['volume'];
+            $newOpportunityData['annual_potential'] = $salesData['volume']; // Match sales volume
+            
+            $newOpportunityId = $this->createNewOpportunity($newOpportunityData, $batchId);
+            
+            // Update original opportunity - remove matched product and reduce potential
+            $remainingProducts = array_diff($oppProducts, array($salesProduct));
+            $originalPotential = floatval($opportunity['annual_potential']);
+            $salesVolume = floatval($salesData['volume']);
+            $newPotential = max($originalPotential - $salesVolume, 0);
+            
+            // Reorganize remaining products in original opportunity
+            $remainingProductsArray = array_values($remainingProducts);
+            $product1 = isset($remainingProductsArray[0]) ? $remainingProductsArray[0] : '';
+            $product2 = isset($remainingProductsArray[1]) ? $remainingProductsArray[1] : '';
+            $product3 = isset($remainingProductsArray[2]) ? $remainingProductsArray[2] : '';
+            
+            // Update original opportunity with remaining products
+            $this->updateOpportunityField($opportunity['id'], 'product_name', $product1, $batchId);
+            if ($product2) {
+                $this->updateOpportunityField($opportunity['id'], 'product_name_2', $product2, $batchId);
+            } else {
+                $this->updateOpportunityField($opportunity['id'], 'product_name_2', '', $batchId);
+            }
+            if ($product3) {
+                $this->updateOpportunityField($opportunity['id'], 'product_name_3', $product3, $batchId);
+            } else {
+                $this->updateOpportunityField($opportunity['id'], 'product_name_3', '', $batchId);
+            }
+            
+            // Update original opportunity potential
+            $this->updateOpportunityField($opportunity['id'], 'annual_potential', $newPotential, $batchId);
+            
+            // Log the split operation
+            if ($this->auditLogger) {
+                $this->auditLogger->logAction($opportunity['id'], 'opportunity_split', 
+                    'Split opportunity: ' . $salesProduct . ' moved to new opportunity ' . $newOpportunityId, $batchId);
+            }
+            
+            $result['split_successful'] = true;
+            $result['new_opportunity_id'] = $newOpportunityId;
+            $result['remaining_products'] = $remainingProducts;
+            $result['original_potential_updated'] = $newPotential;
+            
+        } catch (Exception $e) {
+            error_log("Opportunity split failed: " . $e->getMessage());
+            $result['split_successful'] = false;
+            $result['error'] = $e->getMessage();
+        }
+        
+        return $result;
+    }
 }
 ?>
