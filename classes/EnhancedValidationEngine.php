@@ -266,21 +266,6 @@ class EnhancedValidationEngine {
         $currentVolume = floatval($opportunity['volume_converted']);
         $salesVolume = floatval($salesData['volume']);
         
-        // Check for tier upgrade (Up-Sell detection)
-        $tierUpgrade = $this->checkTierUpgrade($opportunityId, $salesData);
-        if ($tierUpgrade['is_upgrade']) {
-            // Create Up-Sell opportunity
-            $upSellData = $salesData;
-            $upSellData['opp_type'] = 'Up-Sell';
-            $upSellData['parent_opportunity_id'] = $opportunityId;
-            $upSellData['original_entered_date'] = $opportunity['entered_date_time'];
-            $upSellData['tier_upgrade_info'] = $tierUpgrade;
-            
-            $this->createNewOpportunity($upSellData, $batchId);
-            $result['up_sell_created'] = true;
-            $result['messages'][] = 'Up-Sell created: ' . $tierUpgrade['from_tier'] . ' → ' . $tierUpgrade['to_tier'];
-        }
-        
         // Update SKU details in opportunity
         $this->updateOpportunitySKUDetails($opportunityId, $salesData, $batchId);
         $result['sku_updated'] = true;
