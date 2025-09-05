@@ -306,6 +306,9 @@ class EnhancedValidationEngine {
                 if (isset($crossSellUpSellResult['up_sell_created'])) {
                     $result['up_sell_created'] = $crossSellUpSellResult['up_sell_created'];
                 }
+                // Important: Skip volume update for original opportunity when cross-sell/up-sell is created
+                $result['skip_volume_update'] = true;
+                $result['messages'][] = 'Original Retention opportunity unchanged - new product handled separately';
             } else {
                 // No cross-sell/up-sell applicable - just volume update, stay in Retention
                 $result['messages'][] = 'Retention stage maintained - volume updated only';
