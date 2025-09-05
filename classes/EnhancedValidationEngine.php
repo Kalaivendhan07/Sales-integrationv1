@@ -400,17 +400,12 @@ class EnhancedValidationEngine {
             // Update active call plans to new DSR
             $stmt = $this->db->prepare("
                 UPDATE isteer_call_plan 
-                SET event_user_key = :new_dsr,
-                    last_modified_by = 'INTEGRATION_SYSTEM',
-                    last_modified_on = NOW(),
-                    remarks = CONCAT(IFNULL(remarks, ''), ' [DSR Changed by Integration: ', :new_dsr2, ']')
+                SET dsr_name = :new_dsr,
+                    updated_at = NOW()
                 WHERE cmkey = :cmkey 
-                AND active_status = 'A'
-                AND (dsr_status IS NULL OR dsr_status != 'COMPLETED')
             ");
             
             $stmt->bindParam(':new_dsr', $newDSRName);
-            $stmt->bindParam(':new_dsr2', $newDSRName);
             $stmt->bindParam(':cmkey', $opportunity['registration_no']);
             $stmt->execute();
         }
