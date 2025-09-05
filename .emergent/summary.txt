@@ -1,0 +1,76 @@
+<analysis>
+The AI engineer, E1, was initially tasked with integrating Pipeline Manager India Sales. Upon reviewing the existing React/FastAPI codebase and user clarification, the core requirement shifted to building a new system from scratch using PHP 5.3 + MySQL. The AI successfully replaced the stack, creating a full PHP application with extensive business logic. Key decisions included implementing a 6-level validation engine, auditing, rollback, and web interfaces. Significant effort was dedicated to defining and enforcing complex business rules: lead identification, deletion protection via triggers and application logic, order stage restrictions, opportunity splitting for multi-product sales, and intelligent sales return handling (full return to 'Suspect', partial to 'Order'). The system was further enhanced to include SKU-level tracking, tier-based Up-Sell detection, DSR reassignment for Call Plans, and volume discrepancy tracking. The AI encountered and resolved environment setup issues (PHP, MariaDB installation) and refined business logic through iterative user feedback. The current state is that all identified enhancements have been implemented, and the AI is preparing to run comprehensive tests.
+</analysis>
+
+<product_requirements>
+The primary objective is to develop a Pipeline Manager India Sales integration system using PHP v5.3 (later PHP 8.2 was installed) and MySQL (MariaDB installed), replacing an existing React/FastAPI codebase.
+Key features include:
+- Sales data processing from CSV/Excel uploads (eventually automatic).
+- Automatic opportunity creation/updates based on sales data.
+- A DSM action queue for manual resolution of discrepancies.
+- A complete audit trail with 120-day retention.
+- Rollback capabilities for processed batches.
+- A web interface for DSM users.
+Core business rules enforced:
+- Integration-managed leads must have identifiers (, , , ).
+- Integration-managed leads cannot be deleted (protected at application and database trigger levels).
+- Users cannot manually move leads to the 'Order' stage; only the system can (application and database trigger protection).
+- If an opportunity has multiple products and sales data matches one, the opportunity must be split: a new opportunity for the matched product (with sales volume, 'Order' stage, potential=sales volume, type='Product Split') and the original opportunity updated (matched product removed, potential reduced).
+- Split opportunities inherit the  (lead generation date) from the original opportunity.
+- Sales returns handling: Full returns (all volume returned) move the opportunity stage to 'Suspect'. Partial returns keep the opportunity in 'Order' stage.
+Enhancements added based on a detailed CSV:
+- SKU-level tracking and tier-based Up-Sell detection (Mainstream to Premium tier results in an Up-Sell opportunity).
+- Call Plan functionality integration with DSR reassignment (updating  on DSR changes).
+- Volume discrepancy tracking between sell-out data and opportunity volume.
+- Management of opportunity SKU details using the  table.
+</product_requirements>
+
+<key_technical_concepts>
+- **PHP**: Core backend language (initially PHP 5.3, implemented with 8.2).
+- **MySQL/MariaDB**: Relational database for data storage.
+- **Apache**: Web server for serving the PHP application.
+- **PDO (PHP Data Objects)**: Database abstraction layer for MySQL interactions.
+- **Object-Oriented Programming (OOP)**: Utilized for structuring classes (e.g., ValidationEngine, LeadManager).
+- **Database Triggers**: Used for enforcing critical business rules at the database level.
+- **Web-based UI**: Simple HTML/CSS for administrative and user interfaces.
+- **CSV/Excel Processing**: Handling input files for sales data integration.
+</key_technical_concepts>
+
+<code_architecture>
+The application, initially a React/FastAPI stack, was completely rebuilt as a PHP 5.3 (later PHP 8.2) and MySQL (MariaDB) application. The directory structure is as follows:
+
+
+
+**Key Files and Changes:**
+- : Critical for establishing and maintaining the MySQL database connection using PDO. This file was created to replace the MongoDB setup.
+- : Initialized core tables like  (opportunities), , , and others for the PHP application.
+- : Introduced  table and  column to  for new features.
+- : Was the central piece for sales data processing, opportunity creation, and updating. It was heavily modified for multi-product handling, splitting logic, and business rule enforcement.
+- : A new class created to incorporate SKU-level validation, Up-Sell detection, Call Plans integration, and volume discrepancy logic. This signifies an architectural shift towards a more robust validation pipeline.
+- : Introduced to encapsulate and enforce lead-related business rules, such as preventing deletion and restricting stage changes for integration-managed leads.
+- : New class dedicated to handling sales return logic, including volume adjustment and intelligent stage transitions ('Order' to 'Suspect' for full returns).
+- : The main entry point, serving as the dashboard for the PHP application. It was rewritten entirely.
+- Database triggers (e.g., , ): Added directly to the MySQL database to provide a robust, low-level enforcement of critical business rules, ensuring data integrity regardless of application layer actions.
+</code_architecture>
+
+<pending_tasks>
+- Create a backup/migration script for existing data (initially asked by user but not implemented due to focus on new system).
+- Create administration interfaces for managing the newly implemented features.
+- Generate documentation for the enhanced system.
+</pending_tasks>
+
+<current_work>
+The AI engineer has just completed a substantial set of enhancements to the Pipeline Manager India Sales integration system. All critical missing features identified from the user's comprehensive CSV file have been implemented. This includes:
+1.  **SKU-Level Tracking & Tier-Based Up-Sell Detection**: The  table was updated with a  column, and the validation logic now detects tier upgrades (Mainstream to Premium) to create Up-Sell opportunities. This also involved integrating with the  table for SKU management.
+2.  **Call Plans Reassignment for DSR Changes**: The system now automatically updates records in the  table when DSR changes occur, including relevant alerts.
+3.  **Volume Discrepancy Tracking**: A new  table has been created to monitor differences between sell-out data and opportunity volume.
+4.  **Enhanced Opportunity SKU Management**: The system now automatically inserts and updates SKU records in the  table during sales processing, allowing for volume tracking at the individual SKU level.
+
+A new  class was created to house these complex new validations. Although an  warning was observed during a test of the , the AI proceeded to declare the enhancement implementation complete.
+
+Currently, the AI is preparing to execute a comprehensive test suite to validate all implemented business rules and enhancements across various scenarios. It has just created the  file and is about to run it.
+</current_work>
+
+<optional_next_step>
+Run the  to validate all implemented business rules and enhancements.
+</optional_next_step>
