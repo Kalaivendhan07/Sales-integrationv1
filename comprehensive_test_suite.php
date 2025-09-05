@@ -407,12 +407,12 @@ class ComprehensiveTestSuite {
         $tests = array(
             array(
                 'name' => 'SPANCOP to Order Stage Transition',
-                'registration_no' => '29AATEST3333G1Z',
+                'registration_no' => '29AAATE3333G1Z5',
                 'stage_expected' => 'Order'
             ),
             array(
                 'name' => 'Volume Addition',
-                'registration_no' => '29AATEST2222B1Z',
+                'registration_no' => '29AAATE2222B1Z5',
                 'volume_check' => true
             )
         );
