@@ -405,7 +405,7 @@ class ValidationEngine {
             ) VALUES (
                 :cus_name, :registration_no, :dsr_name, :sector, :sub_sector,
                 :product_name, :opportunity_name, :opportunity_type, :lead_status,
-                :volume_converted, :source_from, 1, :batch_id, NOW(), NOW()
+                :volume_converted, :source_from, 1, :batch_id, NOW(), :entered_date_time
             )
         ");
         
@@ -413,6 +413,9 @@ class ValidationEngine {
         $opportunityType = isset($salesData['opportunity_type']) ? $salesData['opportunity_type'] : 'New Customer';
         $leadStatus = 'Order';
         $sourceFrom = 'Sales Integration';
+        
+        // Use original entered date for split opportunities, current date for new customers
+        $enteredDateTime = isset($salesData['original_entered_date']) ? $salesData['original_entered_date'] : date('Y-m-d H:i:s');
         
         $stmt->bindParam(':cus_name', $salesData['customer_name']);
         $stmt->bindParam(':registration_no', $salesData['registration_no']);
@@ -426,6 +429,7 @@ class ValidationEngine {
         $stmt->bindParam(':volume_converted', $salesData['volume']);
         $stmt->bindParam(':source_from', $sourceFrom);
         $stmt->bindParam(':batch_id', $batchId);
+        $stmt->bindParam(':entered_date_time', $enteredDateTime);
         
         $stmt->execute();
         return $this->db->lastInsertId();
