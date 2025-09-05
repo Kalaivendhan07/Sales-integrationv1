@@ -75,13 +75,17 @@ class Level1ComprehensiveDebugger {
                 )
             ");
             
+            $product1 = $customer['products'][0];
+            $product2 = isset($customer['products'][1]) ? $customer['products'][1] : '';
+            $product3 = isset($customer['products'][2]) ? $customer['products'][2] : '';
+            
             $stmt->bindParam(':cus_name', $customer['cus_name']);
             $stmt->bindParam(':registration_no', $customer['registration_no']);
             $stmt->bindParam(':dsr_name', $customer['dsr_name']);
             $stmt->bindParam(':dsr_id', $customer['dsr_id']);
-            $stmt->bindParam(':product1', $customer['products'][0]);
-            $stmt->bindParam(':product2', isset($customer['products'][1]) ? $customer['products'][1] : '');
-            $stmt->bindParam(':product3', isset($customer['products'][2]) ? $customer['products'][2] : '');
+            $stmt->bindParam(':product1', $product1);
+            $stmt->bindParam(':product2', $product2);
+            $stmt->bindParam(':product3', $product3);
             $stmt->bindParam(':opportunity_name', $customer['cus_name']);
             $stmt->bindParam(':stage', $customer['stage']);
             $stmt->bindParam(':volume', $customer['volume']);
