@@ -372,7 +372,7 @@ class ComprehensiveTestSuite {
         echo "════════════════════════════════════════════════════════════════\n";
         
         $testData = array(
-            'registration_no' => '29AATEST2222B1Z',
+            'registration_no' => '29AAATE2222B1Z5',
             'customer_name' => 'Test Corp Beta',
             'dsr_name' => 'DSR Beta',
             'product_family_name' => 'Shell Pro',
