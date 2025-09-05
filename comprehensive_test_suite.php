@@ -597,7 +597,7 @@ class ComprehensiveTestSuite {
         $countBefore = $stmt->fetch(PDO::FETCH_ASSOC)['count'];
         
         $testData = array(
-            'registration_no' => '29AATEST1111A1Z',
+            'registration_no' => '29AAATE1111A1Z5',
             'customer_name' => 'Test Corp Alpha',
             'dsr_name' => 'DSR Alpha',
             'product_family_name' => 'Shell Premium', // Matches second product
