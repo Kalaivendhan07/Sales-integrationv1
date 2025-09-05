@@ -243,7 +243,7 @@ class EnhancedValidationEngine {
     /**
      * Level 6: Enhanced Stage, Volume, SKU & Tier Validation
      */
-    private function level6_EnhancedStageVolumeSkuValidation($salesData, $opportunityId, $batchId) {
+    private function level6_EnhancedStageVolumeSkuValidation($salesData, $opportunityId, $batchId, $isNewOpportunity = false) {
         $result = array('messages' => array(), 'up_sell_created' => false, 'sku_updated' => false);
         
         // Get current opportunity details
