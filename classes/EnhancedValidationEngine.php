@@ -62,6 +62,14 @@ class EnhancedValidationEngine {
             if ($level3Result['needs_action']) {
                 $result['actions'][] = $level3Result['action'];
             }
+            if (isset($level3Result['up_sell_created']) && $level3Result['up_sell_created']) {
+                $result['up_sell_created'] = true;
+                $result['messages'][] = 'Up-Sell opportunity created due to tier upgrade within same product family';
+            }
+            if (isset($level3Result['cross_sell_created']) && $level3Result['cross_sell_created']) {
+                $result['cross_sell_created'] = true;
+                $result['messages'][] = 'Cross-Sell opportunity created for different product family';
+            }
             
             // Level 4: Sector Validation
             $level4Result = $this->level4_SectorValidation($salesData, $opportunityId, $batchId);
