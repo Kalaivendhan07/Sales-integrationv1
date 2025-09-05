@@ -198,12 +198,17 @@ class EnhancedValidationEngine {
         $stmt = $this->db->prepare("
             SELECT product_name, product_name_2, product_name_3, annual_potential, 
                    cus_name, registration_no, dsr_id, dsr_name, sector, sub_sector,
-                   opportunity_name, opp_type, entered_date_time
+                   opportunity_name, opp_type, entered_date_time, lead_status
             FROM isteer_general_lead WHERE id = :id
         ");
         $stmt->bindParam(':id', $opportunityId);
         $stmt->execute();
         $opportunity = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        // Skip Level 3 processing for Retention stage - it has special handling in Level 6
+        if ($opportunity['lead_status'] === 'Retention') {
+            return $result;
+        }
         
         $oppProducts = array_filter(array($opportunity['product_name'], $opportunity['product_name_2'], $opportunity['product_name_3']));
         $salesProduct = $salesData['product_family_name'];
