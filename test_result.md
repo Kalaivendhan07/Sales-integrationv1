@@ -312,7 +312,7 @@ metadata:
 
 test_plan:
   current_focus:
-    - "All backend tasks completed successfully"
+    - "Batch Performance Test (500 Daily Records) - COMPLETED"
   stuck_tasks: []
   test_all: true
   test_priority: "high_first"
