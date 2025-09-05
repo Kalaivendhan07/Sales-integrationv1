@@ -656,7 +656,7 @@ class ComprehensiveTestSuite {
         
         // Test with retention product (has previous year sales)
         $retentionData = array(
-            'registration_no' => '29AATEST4444D1Z',
+            'registration_no' => '29AAATE4444D1Z5',
             'customer_name' => 'Test Corp Delta',
             'dsr_name' => 'DSR Delta',
             'product_family_name' => 'Shell Retention', // Has previous year sales
