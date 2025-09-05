@@ -312,7 +312,8 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Batch Performance Test (500 Daily Records) - COMPLETED"
+    - "Complex Retention Multi-Product Scenario Test"
+    - "Backend System Comprehensive Validation"
   stuck_tasks: []
   test_all: true
   test_priority: "high_first"
