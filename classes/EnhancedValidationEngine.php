@@ -298,17 +298,25 @@ class EnhancedValidationEngine {
             }
         }
         
-        // Volume updates
-        $newVolume = $currentVolume + $salesVolume;
-        $this->updateOpportunityField($opportunityId, 'volume_converted', $newVolume, $batchId);
-        
-        // Update annual potential if converted volume exceeds current value
-        if ($newVolume > floatval($opportunity['annual_potential'])) {
-            $this->updateOpportunityField($opportunityId, 'annual_potential', $newVolume, $batchId);
-            $result['messages'][] = 'Annual potential updated';
+        // Volume updates - only for existing opportunities, not new ones
+        if (!$isNewOpportunity) {
+            $newVolume = $currentVolume + $salesVolume;
+            $this->updateOpportunityField($opportunityId, 'volume_converted', $newVolume, $batchId);
+            $result['messages'][] = 'Volume updated: ' . $currentVolume . ' + ' . $salesVolume . ' = ' . $newVolume;
+            
+            // Update annual potential if converted volume exceeds current value
+            if ($newVolume > floatval($opportunity['annual_potential'])) {
+                $this->updateOpportunityField($opportunityId, 'annual_potential', $newVolume, $batchId);
+                $result['messages'][] = 'Annual potential updated';
+            }
+        } else {
+            // For new opportunities, just update annual potential to match volume if needed
+            if ($salesVolume > floatval($opportunity['annual_potential'])) {
+                $this->updateOpportunityField($opportunityId, 'annual_potential', $salesVolume, $batchId);
+                $result['messages'][] = 'Annual potential updated';
+            }
+            $result['messages'][] = 'Volume already set correctly for new opportunity: ' . $salesVolume . 'L';
         }
-        
-        $result['messages'][] = 'Volume updated: ' . $currentVolume . ' + ' . $salesVolume . ' = ' . $newVolume;
         
         return $result;
     }
