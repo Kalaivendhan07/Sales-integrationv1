@@ -899,6 +899,7 @@ class EnhancedValidationEngine {
             $newOpportunityData['opp_type'] = 'Product Split';
             $newOpportunityData['parent_opportunity_id'] = $opportunityId;
             $newOpportunityData['original_entered_date'] = $opportunity['entered_date_time'];
+            $newOpportunityData['annual_potential'] = $salesData['volume']; // Should match sales volume
             
             $newOpportunityId = $this->createNewOpportunity($newOpportunityData, $batchId);
             
