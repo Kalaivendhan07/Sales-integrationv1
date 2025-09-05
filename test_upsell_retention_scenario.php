@@ -17,7 +17,7 @@ $db = $database->getConnection();
 $auditLogger = new AuditLogger();
 $enhancedEngine = new EnhancedValidationEngine($auditLogger);
 
-$testGSTIN = '11UPSELL11H1ZD5';
+$testGSTIN = '11AAGCA2111H1ZD';
 
 // Clean up any existing data first
 $db->exec("UPDATE isteer_general_lead SET integration_managed = 0 WHERE registration_no = '$testGSTIN'");
