@@ -140,7 +140,7 @@ echo "════════════════════════�
 $stmt = $db->prepare("
     SELECT id, cus_name, product_name, opp_type, volume_converted, lead_status 
     FROM isteer_general_lead 
-    WHERE registration_no = '29TESTUP1234A1Z5'
+    WHERE registration_no = '29TESTUP1234A1Z'
     ORDER BY id
 ");
 $stmt->execute();
