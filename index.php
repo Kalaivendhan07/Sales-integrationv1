@@ -110,6 +110,9 @@ $pendingActions = $stmt->fetch(PDO::FETCH_ASSOC)['count'];
             <a href="api/cleanup_expired.php" class="btn">
                 🧹 Cleanup Expired Data
             </a>
+            <a href="admin/lead_management.php" class="btn btn-info">
+                🔒 Lead Management & Rules
+            </a>
         </div>
 
         <!-- Validation Hierarchy Info -->
