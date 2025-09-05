@@ -78,10 +78,12 @@ class EnhancedValidationEngine {
             }
             
             // Volume Discrepancy Tracking
-            $discrepancyResult = $this->trackVolumeDiscrepancy($salesData, $opportunityId, $batchId);
-            if ($discrepancyResult) {
-                $result['volume_discrepancy'] = $discrepancyResult;
-                $result['messages'][] = 'Volume discrepancy detected and tracked';
+            if ($opportunityId) {
+                $discrepancyResult = $this->trackVolumeDiscrepancy($salesData, $opportunityId, $batchId);
+                if ($discrepancyResult) {
+                    $result['volume_discrepancy'] = $discrepancyResult;
+                    $result['messages'][] = 'Volume discrepancy detected and tracked';
+                }
             }
             
         } catch (Exception $e) {
