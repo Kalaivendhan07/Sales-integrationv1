@@ -279,21 +279,31 @@ class EnhancedValidationEngine {
         $result['sku_updated'] = true;
         
         // Stage validation logic - Complete stage transition rules
-        if (in_array($currentStage, array('SPANCOP', 'Lost', 'Sleep', 'Prospect', 'Qualified', 'Suspect'))) {
+        $orderTransitionStages = array(
+            'Suspect', 'Prospect', 'Approach', 'Negotiate', 'Close', 
+            'Payment', 'Lost', 'Sleep', 'Pending', 'Reject'
+        );
+        
+        if (in_array($currentStage, $orderTransitionStages)) {
             // Any of these stages should transition to Order when sales occur
             $this->updateOpportunityField($opportunityId, 'lead_status', 'Order', $batchId);
             $result['messages'][] = 'Stage updated from ' . $currentStage . ' to Order';
         } else if ($currentStage == 'Retention') {
             // Special handling for Retention stage
-            if ($this->hasPreviousYearSales($salesData['registration_no'], $salesData['sku_code'])) {
-                $result['messages'][] = 'Retention stage maintained - previous year sales found';
+            // First check if cross-sell or up-sell logic is applicable
+            $crossSellUpSellResult = $this->checkRetentionCrossSellUpSell($salesData, $opportunityId, $batchId, $opportunity);
+            
+            if ($crossSellUpSellResult['action_taken']) {
+                $result['messages'][] = $crossSellUpSellResult['message'];
+                if (isset($crossSellUpSellResult['cross_sell_created'])) {
+                    $result['cross_sell_created'] = $crossSellUpSellResult['cross_sell_created'];
+                }
+                if (isset($crossSellUpSellResult['up_sell_created'])) {
+                    $result['up_sell_created'] = $crossSellUpSellResult['up_sell_created'];
+                }
             } else {
-                // Create new "Order" opportunity for new product
-                $newOrderData = $salesData;
-                $newOrderData['opp_type'] = 'New Product';
-                $newOrderData['original_entered_date'] = $opportunity['entered_date_time'];
-                $this->createNewOpportunity($newOrderData, $batchId);
-                $result['messages'][] = 'New Product opportunity created from Retention';
+                // No cross-sell/up-sell applicable - just volume update, stay in Retention
+                $result['messages'][] = 'Retention stage maintained - volume updated only';
             }
         } else if ($currentStage == 'Order') {
             // Already in Order stage - just add volume
