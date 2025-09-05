@@ -72,7 +72,7 @@ class EnhancedValidationEngine {
             $result['messages'] = array_merge($result['messages'], $level5Result['messages']);
             
             // Level 6: Enhanced Stage, Volume, SKU & Tier Validation
-            $level6Result = $this->level6_EnhancedStageVolumeSkuValidation($salesData, $opportunityId, $batchId);
+            $level6Result = $this->level6_EnhancedStageVolumeSkuValidation($salesData, $opportunityId, $batchId, $isNewOpportunity);
             $result['messages'] = array_merge($result['messages'], $level6Result['messages']);
             if ($level6Result['up_sell_created']) {
                 $result['up_sell_created'] = true;
