@@ -42,7 +42,7 @@ class DebugBatchPerformance {
                 opportunity_name, lead_status, volume_converted, annual_potential,
                 source_from, integration_managed, integration_batch_id, entered_date_time
             ) VALUES (
-                'Debug Test Customer 1', '29PERF0001A1Z1', 'DSR_A', 1001,
+                'Debug Test Customer 1', '29PERFA0001A1Z1', 'DSR_A', 1001,
                 'Manufacturing', 'Industrial', 'Shell Ultra', 'Shell Premium', 'Shell Standard',
                 'Debug Test Customer 1 Opportunity', 'Qualified', 400, 2000,
                 'Debug Test', 1, 'DEBUG_BATCH', '2025-01-01 10:00:00'
