@@ -318,8 +318,8 @@ class EnhancedValidationEngine {
             $result['messages'][] = 'Order stage maintained - additional volume added';
         }
         
-        // Volume updates - only for existing opportunities, not new ones
-        if (!$isNewOpportunity) {
+        // Volume updates - only for existing opportunities, not new ones, and not when cross-sell/up-sell is created
+        if (!$isNewOpportunity && !isset($result['skip_volume_update'])) {
             $newVolume = $currentVolume + $salesVolume;
             $this->updateOpportunityField($opportunityId, 'volume_converted', $newVolume, $batchId);
             $result['messages'][] = 'Volume updated: ' . $currentVolume . ' + ' . $salesVolume . ' = ' . $newVolume;
@@ -329,7 +329,9 @@ class EnhancedValidationEngine {
                 $this->updateOpportunityField($opportunityId, 'annual_potential', $newVolume, $batchId);
                 $result['messages'][] = 'Annual potential updated';
             }
-        } else {
+        } else if (isset($result['skip_volume_update'])) {
+            $result['messages'][] = 'Volume update skipped - handled in separate opportunity';
+        } else if (!$isNewOpportunity) {
             // For new opportunities, just update annual potential to match volume if needed
             if ($salesVolume > floatval($opportunity['annual_potential'])) {
                 $this->updateOpportunityField($opportunityId, 'annual_potential', $salesVolume, $batchId);
