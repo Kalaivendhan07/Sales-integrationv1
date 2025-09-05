@@ -185,7 +185,7 @@ class BackendTestSuite {
         echo "════════════════════════════════════════════════════════════════\n";
         
         $salesData = array(
-            'registration_no' => '29AATEST8888C1Z',
+            'registration_no' => '29AATEST8888C1ZW',
             'customer_name' => 'Creation Test Corp',
             'dsr_name' => 'DSR Creation',
             'product_family_name' => 'Shell Creation',
