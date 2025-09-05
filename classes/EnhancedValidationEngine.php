@@ -236,8 +236,8 @@ class EnhancedValidationEngine {
             } else {
                 // It's retention - log but no action
                 if ($this->auditLogger) {
-                    $this->auditLogger->logAction($opportunityId, 'product_retention', 
-                        'Retention identified for ' . $salesProduct, $batchId);
+                    $this->auditLogger->logChange($opportunityId, 'product_retention', 
+                        '', 'Retention identified for ' . $salesProduct, $batchId);
                 }
             }
         }
