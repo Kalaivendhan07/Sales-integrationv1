@@ -288,11 +288,12 @@ class ValidationEngine {
             INSERT INTO isteer_general_lead (
                 cus_name, registration_no, dsr_name, sector, sub_sector,
                 product_name, opportunity_name, opportunity_type, lead_status,
-                volume_converted, source_from, entered_date_time
+                volume_converted, source_from, integration_managed, 
+                integration_batch_id, last_integration_update, entered_date_time
             ) VALUES (
                 :cus_name, :registration_no, :dsr_name, :sector, :sub_sector,
                 :product_name, :opportunity_name, :opportunity_type, :lead_status,
-                :volume_converted, :source_from, NOW()
+                :volume_converted, :source_from, 1, :batch_id, NOW(), NOW()
             )
         ");
         
@@ -312,6 +313,7 @@ class ValidationEngine {
         $stmt->bindParam(':lead_status', $leadStatus);
         $stmt->bindParam(':volume_converted', $salesData['volume']);
         $stmt->bindParam(':source_from', $sourceFrom);
+        $stmt->bindParam(':batch_id', $batchId);
         
         $stmt->execute();
         return $this->db->lastInsertId();
