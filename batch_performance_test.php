@@ -49,7 +49,7 @@ class BatchPerformanceTest {
         // Create 50 existing opportunities to simulate real scenario
         $baseOpportunities = array();
         for ($i = 1; $i <= 50; $i++) {
-            $gstin = sprintf('29PERFA%03d1Z%d', $i, $i % 10);
+            $gstin = sprintf('29PERFA%04d1Z%d', $i, $i % 10);
             $baseOpportunities[] = array(
                 'cus_name' => "Performance Test Customer {$i}",
                 'registration_no' => $gstin,
