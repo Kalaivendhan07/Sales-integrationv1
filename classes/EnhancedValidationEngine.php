@@ -425,9 +425,15 @@ class EnhancedValidationEngine {
         // Get new tier from sales data
         $newTier = isset($salesData['tire_type']) ? $salesData['tire_type'] : 'Mainstream';
         
-        // Get new tier from sales data
-        $salesTier = isset($salesData['tire_type']) ? $salesData['tire_type'] : 'Mainstream';
+        // Check for tier upgrade: Mainstream -> Premium
+        if ($currentTier === 'Mainstream' && $newTier === 'Premium') {
+            $result['is_upgrade'] = true;
+            $result['from_tier'] = $currentTier;
+            $result['to_tier'] = $newTier;
+        }
         
+        return $result;
+    }
         if ($currentTier && $currentTier['current_tier'] == 'Mainstream' && $salesTier == 'Premium') {
             $result['is_upgrade'] = true;
             $result['from_tier'] = 'Mainstream';
