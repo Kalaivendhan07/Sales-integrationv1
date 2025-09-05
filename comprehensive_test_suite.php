@@ -626,7 +626,7 @@ class ComprehensiveTestSuite {
         if ($splitOccurred) {
             $stmt = $this->db->prepare("
                 SELECT entered_date_time FROM isteer_general_lead 
-                WHERE registration_no = '29AATEST1111A1Z'
+                WHERE registration_no = '29AAATE1111A1Z5'
                 ORDER BY id
             ");
             $stmt->execute();
