@@ -129,7 +129,7 @@ if (isset($result2['cross_sell_created']) && $result2['cross_sell_created']) {
 }
 
 // Count opportunities after Test 2
-$stmt = $db->prepare("SELECT COUNT(*) as count FROM isteer_general_lead WHERE registration_no = '29TESTUP1234A1Z5'");
+$stmt = $db->prepare("SELECT COUNT(*) as count FROM isteer_general_lead WHERE registration_no = '29TESTUP1234A1Z'");
 $stmt->execute();
 $count2 = $stmt->fetch(PDO::FETCH_ASSOC);
 echo "Opportunities after Test 2: " . $count2['count'] . " (Expected: 3)\n\n";
