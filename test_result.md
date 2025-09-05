@@ -238,3 +238,5 @@ test_plan:
 agent_communication:
   - agent: "main"
     message: "Comprehensive test suite executed showing 18.8% success rate (3/16 tests passed). Major issues in core validation engine - most validation logic returning FAILED status for valid data. Database setup working correctly. Need backend testing agent to investigate EnhancedValidationEngine and SalesReturnProcessor classes."
+  - agent: "testing"
+    message: "MAJOR PROGRESS: Fixed critical database schema issues. Level 1 GSTIN validation now working correctly. Fixed 'status' column references in EnhancedValidationEngine and SalesReturnProcessor. Opportunity creation working. Still need to fix: Sales returns processing, volume discrepancy tracking, and database trigger compatibility in tests."
