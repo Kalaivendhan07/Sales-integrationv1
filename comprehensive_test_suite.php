@@ -438,12 +438,14 @@ class ComprehensiveTestSuite {
             $volumeUpdated = false;
             $skuUpdated = isset($result['sku_updated']) && $result['sku_updated'];
             
-            foreach ($result['messages'] as $msg) {
-                if (strpos($msg, 'Stage updated') !== false) {
-                    $stageUpdated = true;
-                }
-                if (strpos($msg, 'Volume updated') !== false) {
-                    $volumeUpdated = true;
+            if (isset($result['messages']) && is_array($result['messages'])) {
+                foreach ($result['messages'] as $msg) {
+                    if (strpos($msg, 'Stage updated') !== false) {
+                        $stageUpdated = true;
+                    }
+                    if (strpos($msg, 'Volume updated') !== false) {
+                        $volumeUpdated = true;
+                    }
                 }
             }
             
