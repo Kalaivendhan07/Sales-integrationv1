@@ -123,7 +123,7 @@ class BatchPerformanceTest {
             if ($isExisting) {
                 // Existing customer
                 $customerNum = ($i % 50) + 1;
-                $gstin = sprintf('29PERF%04dA1Z%d', $customerNum, $customerNum % 10);
+                $gstin = sprintf('29PERFA%03d1Z%d', $customerNum, $customerNum % 10);
                 $customerName = "Performance Test Customer {$customerNum}";
                 $dsrName = "DSR_" . chr(65 + ($customerNum % 26));
             } else {
