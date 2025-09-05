@@ -118,17 +118,29 @@ class ComprehensiveTestSuite {
                 )
             ");
             
-            $stmt->bindParam(':cus_name', $customer['cus_name']);
-            $stmt->bindParam(':registration_no', $customer['registration_no']);
-            $stmt->bindParam(':dsr_name', $customer['dsr_name']);
-            $stmt->bindParam(':dsr_id', $customer['dsr_id']);
-            $stmt->bindParam(':product1', $customer['products'][0]);
-            $stmt->bindParam(':product2', isset($customer['products'][1]) ? $customer['products'][1] : '');
-            $stmt->bindParam(':product3', isset($customer['products'][2]) ? $customer['products'][2] : '');
-            $stmt->bindParam(':opportunity_name', $customer['cus_name'] . ' Opportunity');
-            $stmt->bindParam(':stage', $customer['stage']);
-            $stmt->bindParam(':volume', $customer['volume']);
-            $stmt->bindParam(':potential', $customer['potential']);
+            $cus_name = $customer['cus_name'];
+            $registration_no = $customer['registration_no'];
+            $dsr_name = $customer['dsr_name'];
+            $dsr_id = $customer['dsr_id'];
+            $product1 = $customer['products'][0];
+            $product2 = isset($customer['products'][1]) ? $customer['products'][1] : '';
+            $product3 = isset($customer['products'][2]) ? $customer['products'][2] : '';
+            $opportunity_name = $customer['cus_name'] . ' Opportunity';
+            $stage = $customer['stage'];
+            $volume = $customer['volume'];
+            $potential = $customer['potential'];
+            
+            $stmt->bindParam(':cus_name', $cus_name);
+            $stmt->bindParam(':registration_no', $registration_no);
+            $stmt->bindParam(':dsr_name', $dsr_name);
+            $stmt->bindParam(':dsr_id', $dsr_id);
+            $stmt->bindParam(':product1', $product1);
+            $stmt->bindParam(':product2', $product2);
+            $stmt->bindParam(':product3', $product3);
+            $stmt->bindParam(':opportunity_name', $opportunity_name);
+            $stmt->bindParam(':stage', $stage);
+            $stmt->bindParam(':volume', $volume);
+            $stmt->bindParam(':potential', $potential);
             
             $stmt->execute();
         }
