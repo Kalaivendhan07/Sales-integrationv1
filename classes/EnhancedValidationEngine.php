@@ -613,7 +613,7 @@ class EnhancedValidationEngine {
         
         // Create new opportunity for the matched product with SAME lead generation date
         $newOpportunityData = $salesData;
-        $newOpportunityData['opportunity_type'] = 'Product Split';
+        $newOpportunityData['opp_type'] = 'Product Split';
         $newOpportunityData['annual_potential'] = $salesVolume; // Targeted volume = Invoiced volume
         $newOpportunityData['parent_opportunity_id'] = $originalOpportunityId;
         $newOpportunityData['original_entered_date'] = $opportunity['entered_date_time']; // Preserve original date
