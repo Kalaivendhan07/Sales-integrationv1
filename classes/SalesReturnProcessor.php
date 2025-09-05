@@ -64,7 +64,7 @@ class SalesReturnProcessor {
             SELECT * FROM isteer_general_lead 
             WHERE registration_no = :gstin 
             AND (product_name = :product OR product_name_2 = :product OR product_name_3 = :product)
-            AND status = 'A'
+            AND lead_status IN ('Order', 'Qualified')
             ORDER BY volume_converted DESC
             LIMIT 1
         ");
