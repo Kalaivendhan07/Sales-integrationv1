@@ -518,7 +518,7 @@ class EnhancedValidationEngine {
         ");
         
         $opportunityName = $salesData['customer_name'];
-        $oppType = isset($salesData['opportunity_type']) ? $salesData['opportunity_type'] : 'New Customer';
+        $oppType = isset($salesData['opp_type']) ? $salesData['opp_type'] : 'New Customer';
         $leadStatus = 'Order';
         $sourceFrom = 'Sales Integration';
         
