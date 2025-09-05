@@ -258,7 +258,7 @@ class EnhancedValidationEngine {
         if ($tierUpgrade['is_upgrade']) {
             // Create Up-Sell opportunity
             $upSellData = $salesData;
-            $upSellData['opportunity_type'] = 'Up-Sell';
+            $upSellData['opp_type'] = 'Up-Sell';
             $upSellData['parent_opportunity_id'] = $opportunityId;
             $upSellData['original_entered_date'] = $opportunity['entered_date_time'];
             $upSellData['tier_upgrade_info'] = $tierUpgrade;
