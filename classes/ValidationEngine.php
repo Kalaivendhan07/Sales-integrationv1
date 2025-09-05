@@ -144,14 +144,16 @@ class ValidationEngine {
     }
     
     /**
-     * Level 3: Product Family Validation
+     * Level 3: Product Family Validation with Opportunity Splitting
      */
     private function level3_ProductFamilyValidation($salesData, $opportunityId, $batchId) {
         $result = array('needs_action' => false, 'action' => null);
         
-        // Get current opportunity product families
+        // Get current opportunity product families and volume details
         $stmt = $this->db->prepare("
-            SELECT product_name, product_name_2, product_name_3 
+            SELECT product_name, product_name_2, product_name_3, annual_potential, 
+                   cus_name, registration_no, dsr_id, dsr_name, sector, sub_sector,
+                   opportunity_name, opportunity_type
             FROM isteer_general_lead WHERE id = :id
         ");
         $stmt->bindParam(':id', $opportunityId);
@@ -160,6 +162,9 @@ class ValidationEngine {
         
         $oppProducts = array($opportunity['product_name'], $opportunity['product_name_2'], $opportunity['product_name_3']);
         $salesProduct = $salesData['product_family_name'];
+        
+        // Remove empty products
+        $oppProducts = array_filter($oppProducts, function($product) { return !empty($product); });
         
         // Check if sales product family matches any opportunity product family
         if (!in_array($salesProduct, $oppProducts)) {
@@ -171,9 +176,115 @@ class ValidationEngine {
             $this->createNewOpportunity($crossSellData, $batchId);
             $result['needs_action'] = true;
             $result['action'] = 'CROSS_SELL_OPPORTUNITY_CREATED';
+        } else {
+            // Product matches - check if opportunity has multiple products
+            if (count($oppProducts) > 1) {
+                // SPLIT OPPORTUNITY: Create new opportunity for matched product
+                $this->splitOpportunityForProduct($opportunity, $salesData, $batchId, $opportunityId);
+                $result['needs_action'] = true;
+                $result['action'] = 'OPPORTUNITY_SPLIT_FOR_PRODUCT';
+            }
+            // If only 1 product, continue normal processing (no split needed)
         }
         
         return $result;
+    }
+    
+    /**
+     * Split opportunity when multiple products exist and one matches sales
+     */
+    private function splitOpportunityForProduct($opportunity, $salesData, $batchId, $originalOpportunityId) {
+        $salesProduct = $salesData['product_family_name'];
+        $salesVolume = floatval($salesData['volume']);
+        $currentAnnualPotential = floatval($opportunity['annual_potential']);
+        
+        // Create new opportunity for the matched product
+        $newOpportunityData = $salesData;
+        $newOpportunityData['opportunity_type'] = 'Product Split';
+        $newOpportunityData['annual_potential'] = $salesVolume; // Targeted volume = Invoiced volume
+        $newOpportunityData['parent_opportunity_id'] = $originalOpportunityId;
+        
+        $newOpportunityId = $this->createNewOpportunity($newOpportunityData, $batchId);
+        
+        // Update original opportunity: Remove matched product and adjust volume
+        $this->removeProductFromOpportunity($originalOpportunityId, $salesProduct, $salesVolume, $batchId);
+        
+        // Log the split action
+        if ($this->auditLogger) {
+            $this->auditLogger->logChange(
+                $originalOpportunityId, 
+                'opportunity_split', 
+                'Single opportunity with multiple products', 
+                'Split into separate opportunities for product: ' . $salesProduct,
+                $batchId
+            );
+        }
+        
+        return $newOpportunityId;
+    }
+    
+    /**
+     * Remove product from multi-product opportunity and adjust volume
+     */
+    private function removeProductFromOpportunity($opportunityId, $productToRemove, $volumeToSubtract, $batchId) {
+        // Get current opportunity details
+        $stmt = $this->db->prepare("
+            SELECT product_name, product_name_2, product_name_3, annual_potential
+            FROM isteer_general_lead WHERE id = :id
+        ");
+        $stmt->bindParam(':id', $opportunityId);
+        $stmt->execute();
+        $opportunity = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        // Determine which product field to clear and reorganize remaining products
+        $newProduct1 = '';
+        $newProduct2 = '';
+        $newProduct3 = '';
+        
+        $remainingProducts = array();
+        if ($opportunity['product_name'] != $productToRemove && !empty($opportunity['product_name'])) {
+            $remainingProducts[] = $opportunity['product_name'];
+        }
+        if ($opportunity['product_name_2'] != $productToRemove && !empty($opportunity['product_name_2'])) {
+            $remainingProducts[] = $opportunity['product_name_2'];
+        }
+        if ($opportunity['product_name_3'] != $productToRemove && !empty($opportunity['product_name_3'])) {
+            $remainingProducts[] = $opportunity['product_name_3'];
+        }
+        
+        // Reassign remaining products
+        if (isset($remainingProducts[0])) $newProduct1 = $remainingProducts[0];
+        if (isset($remainingProducts[1])) $newProduct2 = $remainingProducts[1];
+        
+        // Calculate new annual potential
+        $newAnnualPotential = max(0, floatval($opportunity['annual_potential']) - $volumeToSubtract);
+        
+        // Update the original opportunity
+        $stmt = $this->db->prepare("
+            UPDATE isteer_general_lead 
+            SET product_name = :product1,
+                product_name_2 = :product2, 
+                product_name_3 = :product3,
+                annual_potential = :new_potential,
+                integration_managed = 1,
+                integration_batch_id = :batch_id,
+                last_integration_update = NOW()
+            WHERE id = :id
+        ");
+        
+        $stmt->bindParam(':product1', $newProduct1);
+        $stmt->bindParam(':product2', $newProduct2);
+        $stmt->bindParam(':product3', $newProduct3);
+        $stmt->bindParam(':new_potential', $newAnnualPotential);
+        $stmt->bindParam(':batch_id', $batchId);
+        $stmt->bindParam(':id', $opportunityId);
+        $stmt->execute();
+        
+        // Log the changes
+        if ($this->auditLogger) {
+            $this->auditLogger->logChange($opportunityId, 'product_removed', $productToRemove, 'Product split to new opportunity', $batchId);
+            $this->auditLogger->logChange($opportunityId, 'annual_potential', $opportunity['annual_potential'], $newAnnualPotential, $batchId);
+        }
     }
     
     /**
