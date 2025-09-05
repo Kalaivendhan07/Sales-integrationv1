@@ -215,22 +215,36 @@ class EnhancedValidationEngine {
         
         // Check if sales product family matches any opportunity product family
         if (in_array($salesProduct, $oppProducts)) {
-            // SAME PRODUCT FAMILY - Check for tier upgrade (Up-Sell)
-            $tierUpgrade = $this->checkTierUpgradeForSameProduct($opportunityId, $salesData);
-            if ($tierUpgrade['is_upgrade']) {
-                // Create Up-Sell opportunity for tier upgrade within same product family
-                $upSellData = $salesData;
-                $upSellData['opp_type'] = 'Up-Sell';
-                $upSellData['parent_opportunity_id'] = $opportunityId;
-                $upSellData['original_entered_date'] = $opportunity['entered_date_time'];
-                $upSellData['tier_upgrade_info'] = $tierUpgrade;
-                
-                $this->createNewOpportunity($upSellData, $batchId);
-                $result['needs_action'] = true;
-                $result['action'] = 'UP_SELL_OPPORTUNITY_CREATED';
-                $result['up_sell_created'] = true;
+            // SAME PRODUCT FAMILY - Check if splitting is required
+            if (count($oppProducts) > 1) {
+                // MULTI-PRODUCT OPPORTUNITY + Sales matches ONE product = SPLIT REQUIRED
+                $splitResult = $this->splitMultiProductOpportunity($opportunity, $salesData, $batchId);
+                if ($splitResult['split_successful']) {
+                    $result['needs_action'] = true;
+                    $result['action'] = 'OPPORTUNITY_SPLIT_COMPLETED';
+                    $result['opportunity_split'] = true;
+                    $result['split_opportunity_id'] = $splitResult['new_opportunity_id'];
+                    $result['messages'][] = 'Multi-product opportunity split: ' . $salesProduct . ' separated from ' . implode('+', array_diff($oppProducts, array($salesProduct)));
+                    return $result; // Exit early - splitting handles everything
+                }
+            } else {
+                // SINGLE PRODUCT OPPORTUNITY - Check for tier upgrade (Up-Sell)
+                $tierUpgrade = $this->checkTierUpgradeForSameProduct($opportunityId, $salesData);
+                if ($tierUpgrade['is_upgrade']) {
+                    // Create Up-Sell opportunity for tier upgrade within same product family
+                    $upSellData = $salesData;
+                    $upSellData['opp_type'] = 'Up-Sell';
+                    $upSellData['parent_opportunity_id'] = $opportunityId;
+                    $upSellData['original_entered_date'] = $opportunity['entered_date_time'];
+                    $upSellData['tier_upgrade_info'] = $tierUpgrade;
+                    
+                    $this->createNewOpportunity($upSellData, $batchId);
+                    $result['needs_action'] = true;
+                    $result['action'] = 'UP_SELL_OPPORTUNITY_CREATED';
+                    $result['up_sell_created'] = true;
+                }
             }
-            // If same product + same tier, no action needed (just volume addition in Level 6)
+            // If same product + same tier + single product, no action needed (just volume addition in Level 6)
         } else {
             // DIFFERENT PRODUCT FAMILY - Check for Cross-Sell vs Retention
             $isRetention = $this->checkPreviousYearSales($salesData['registration_no'], $salesData['product_family_name']);
