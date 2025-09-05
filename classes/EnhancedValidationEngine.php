@@ -200,7 +200,7 @@ class EnhancedValidationEngine {
             if (!$isRetention) {
                 // Create Cross-Sell opportunity
                 $crossSellData = $salesData;
-                $crossSellData['opportunity_type'] = 'Cross-Sell';
+                $crossSellData['opp_type'] = 'Cross-Sell';
                 $crossSellData['parent_opportunity_id'] = $opportunityId;
                 $crossSellData['original_entered_date'] = $opportunity['entered_date_time'];
                 
