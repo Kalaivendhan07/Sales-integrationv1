@@ -128,7 +128,7 @@ class BatchPerformanceTest {
                 $dsrName = "DSR_" . chr(65 + ($customerNum % 26));
             } else {
                 // New customer
-                $gstin = sprintf('29NEWAB%04d2Z%d', $i, $i % 10);
+                $gstin = sprintf('29NEWAB%03d12Z%d', $i, $i % 10);
                 $customerName = "New Customer {$i}";
                 $dsrName = "DSR_" . chr(65 + ($i % 26));
             }
