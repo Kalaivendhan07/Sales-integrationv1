@@ -34,6 +34,9 @@ try {
     } else {
         echo "No messages array found\n";
         echo "Result keys: " . implode(', ', array_keys($result)) . "\n";
+        if (isset($result['message'])) {
+            echo "Single message: " . $result['message'] . "\n";
+        }
     }
     
 } catch (Exception $e) {
