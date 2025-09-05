@@ -66,7 +66,7 @@ echo "📋 TEST 1: Same Product Family + Tier Upgrade (Should be UP-SELL)\n";
 echo "══════════════════════════════════════════════════════════════════\n";
 
 $salesData1 = array(
-    'registration_no' => '29TESTUP1234A1Z5',
+    'registration_no' => '29TESTUP1234A1Z',
     'customer_name' => 'Test Corp Ltd',
     'dsr_name' => 'Test DSR',
     'product_family_name' => 'Shell Ultra',  // SAME PRODUCT FAMILY
