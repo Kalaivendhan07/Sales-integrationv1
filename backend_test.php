@@ -112,7 +112,7 @@ class BackendTestSuite {
         
         // Test with existing customer
         $salesData = array(
-            'registration_no' => '29AATEST0001B1ZX',
+            'registration_no' => '29AATEST0001B1X',
             'customer_name' => 'Backend Test Corp',
             'dsr_name' => 'DSR Backend',
             'product_family_name' => 'Shell Ultra',
@@ -122,7 +122,7 @@ class BackendTestSuite {
             'sub_sector' => 'Software'
         );
         
-        echo "  🧪 Testing with existing customer (29AATEST0001B1ZX):\n";
+        echo "  🧪 Testing with existing customer (29AATEST0001B1X):\n";
         
         try {
             // Use reflection to test the private level1_GSTINValidation method
