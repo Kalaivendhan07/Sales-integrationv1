@@ -109,12 +109,12 @@ class ComprehensiveTestSuite {
                     cus_name, registration_no, dsr_name, dsr_id, sector, sub_sector,
                     product_name, product_name_2, product_name_3,
                     opportunity_name, lead_status, volume_converted, annual_potential,
-                    source_from, integration_managed, entered_date_time
+                    source_from, integration_managed, integration_batch_id, entered_date_time
                 ) VALUES (
                     :cus_name, :registration_no, :dsr_name, :dsr_id, 'Technology', 'Software',
                     :product1, :product2, :product3,
                     :opportunity_name, :stage, :volume, :potential,
-                    'Test Setup', 0, '2025-07-01 10:00:00'
+                    'Test Setup', 1, 'TEST_BATCH', '2025-07-01 10:00:00'
                 )
             ");
             
